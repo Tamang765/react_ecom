@@ -349,3 +349,44 @@ export const products = [
     image: "http://dummyimage.com/132x100.png/dddddd/000000",
   },
 ];
+
+const categoryData = [
+  {
+    id: 1,
+    name: "Men",
+    image:
+      "https://img.drz.lazcdn.com/static/np/p/042e720ee2536c72f2b4d6859506f5d8.png_170x170q80.png",
+  },
+  {
+    id: 2,
+    name: "Women",
+    image:
+      "https://img.drz.lazcdn.com/static/np/p/92af3d728ac5493e981966d3cf9d4c31.jpg_170x170q80.jpg ",
+  },
+  {
+    id: 3,
+    name: "Kids",
+    image:
+      "https://img.drz.lazcdn.com/static/np/p/ce62cc890d64ba0c47db0b07cfbb1400.jpg_170x170q80.jpg",
+  },
+  {
+    id: 4,
+    name: "Men",
+    image:
+      "https://img.drz.lazcdn.com/static/np/p/aee12c1a55546b7926446be591f26e23.jpg_170x170q80.jpg",
+  },
+  {
+    id: 5,
+    name: "Men",
+    image:
+      "https://img.drz.lazcdn.com/g/kf/S48f0599eeeb949539b5c99302cc2f453k.jpg_200x200q80.jpg_.webp",
+  },
+  {
+    id: 6,
+    name: "Men",
+    image:
+      "https://img.drz.lazcdn.com/g/kf/S48f0599eeeb949539b5c99302cc2f453k.jpg_200x200q80.jpg_.webp",
+  },
+];
+
+export { categoryData };
