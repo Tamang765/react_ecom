@@ -34,6 +34,6 @@ jobs:
          server: ${{ secrets.GIT_CPANEL_REACT_SERVER }}
          username: ${{ secrets.GIT_CPANEL_REACT_USER }}
          password: ${{ secrets.GIT_CPANEL_REACT_PWD }}
-         server-dir: /  # Deploy to the root of public_html
-         local-dir: ./dist/
+         server-dir: /public_html/etrendnepal.com/
+         local-dir: ./build/
        
