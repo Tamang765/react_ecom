@@ -6,8 +6,8 @@ const Navbar = () => {
   return (
     <>
       <nav className="">
-        <div className="flex items-center justify-around ">
-          <div>
+        <div className="flex items-center justify-around   shadow-sm">
+          <Link to={"/"}>
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTj-MM_UyJqsvN2GeGKQKLEHNaL-cfeoLa-Q&s"
               alt="logo"
@@ -15,15 +15,16 @@ const Navbar = () => {
               height="80px"
               className="border-2 "
             />
-          </div>
+          </Link>
           <div className="flex gap-5">
             <Link className="text-sky-400" to="/">
-              Home
+              Men
             </Link>
-            <Link to="/about">About</Link>
-            <Link to="/contact">Contact</Link>
+            <Link to="/women">Women</Link>
+            <Link to="/junior">Junior</Link>
           </div>
           <div className="flex items- gap-4  ">
+            <input type="text" className="border-2" />
             <Heart />
             <ShoppingCart />
             <User />

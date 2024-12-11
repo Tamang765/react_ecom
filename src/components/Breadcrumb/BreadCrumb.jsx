@@ -11,7 +11,7 @@ const BreadCrumb = () => {
         {`>`}
         <Link to="/clothing">clothing</Link>
         {`>`}
-        <Link to="/product/1">product1</Link>
+        <Link to="/product/1"></Link>
       </div>
     </>
   );

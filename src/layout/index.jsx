@@ -7,7 +7,9 @@ const Index = () => {
   return (
     <div className="max-w-7xl mx-auto ">
       <Navbar />
-      <Outlet />
+      <div className="my-8">
+        <Outlet />
+      </div>
       <Footer />
     </div>
   );

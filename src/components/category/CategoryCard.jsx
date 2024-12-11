@@ -1,7 +1,6 @@
 import React from "react";
 
 const CategoryCard = (props) => {
-  console.log(props);
   return (
     <div className=" hover:shadow-2xl border-2  p-8 ">
       <img

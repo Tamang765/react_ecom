@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import BreadCrumb from "../../components/Breadcrumb/BreadCrumb";
 
 const ProductDetail = () => {
   const [productImage, setProductImage] = useState(
@@ -12,9 +11,9 @@ const ProductDetail = () => {
 
   return (
     <>
-      <BreadCrumb />
+      {/* <BreadCrumb /> */}
       <div className="grid lg:grid-cols-2 grid-cols-1 gap-2 ">
-        <div className=" border-black overflow-hidden ">
+        <div className=" border-black overflow-hidden h-fit ">
           <img src={productImage} alt="shoes" className=" w-full h-3/5 " />
           <div className="flex gap-2 mt-1">
             <img
@@ -86,22 +85,22 @@ const ProductDetail = () => {
           </label>
           <div className="flex flex-wrap gap-4  items-center mt-4">
             <div className="border-2 min-w-10 w-fit flex  gap-4 p-2">
-              <input type="radio" id="l" name="fav_language" value="L" />{" "}
+              <input type="radio" id="l" name="size" value="L" />{" "}
               <label for="l">L</label>
             </div>
             <br />
             <div className="border-2 min-w-10 w-fit flex  gap-4 p-2">
-              <input type="radio" id="m" name="fav_language" value="M" />{" "}
+              <input type="radio" id="m" name="size" value="M" />{" "}
               <label for="m">M</label>
             </div>
             <br />
             <div className="border-2 min-w-10 w-fit flex  gap-4 p-2">
-              <input type="radio" id="s" name="fav_language" value="S" />{" "}
+              <input type="radio" id="s" name="size" value="S" />{" "}
               <label for="s">S</label>
             </div>
             <br />
             <div className="border-2 min-w-10 w-fit flex  gap-4 p-2">
-              <input type="radio" id="xs" name="fav_language" value="Xs" />
+              <input type="radio" id="xs" name="size" value="Xs" />
               <label for="xs">Xs</label>
             </div>
           </div>
@@ -112,6 +111,21 @@ const ProductDetail = () => {
             <AddToCart />
           </div>
         </div>
+      </div>
+      <div className="py-8">
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem
+          nostrum possimus esse, officia quis sed accusantium. Eius earum
+          reiciendis qui repellendus, placeat dolorum! Qui explicabo expedita
+          nisi minima adipisci ex est aliquam inventore tempora, voluptate
+          dolorum? Perspiciatis quia sit non dignissimos. Officia deleniti,
+          possimus eum nisi a vero quia laudantium? Neque odio, ex veritatis non
+          dolores nesciunt nulla repudiandae fuga sit numquam sequi nam sunt
+          nihil ut esse, et, tenetur reprehenderit in sed saepe ratione. Quae
+          quisquam culpa est sint dolor a perspiciatis possimus porro iusto
+          rerum reiciendis eligendi, velit voluptatem ex recusandae in repellat
+          vel maxime doloribus temporibus ut!
+        </p>
       </div>
     </>
   );
