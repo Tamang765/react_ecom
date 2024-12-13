@@ -3,6 +3,7 @@ import axios from "axios";
 
 const initialState = {
   products: [],
+
   isLoading: false,
   isError: false,
 };
@@ -12,7 +13,7 @@ export const getProduct = createAsyncThunk("getProduct", async () => {
     const response = await axios.get(
       "https://my-json-server.typicode.com/typicode/demo/posts"
     );
-    console.log(response);
+
     return response;
   } catch (error) {
     console.error("Error:", error);
@@ -20,14 +21,10 @@ export const getProduct = createAsyncThunk("getProduct", async () => {
   }
 });
 
-
-
 const productSlice = createSlice({
   name: "product",
   initialState,
-  reducers: {
-    
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getProduct.pending, (state) => {
       state.isLoading = true;

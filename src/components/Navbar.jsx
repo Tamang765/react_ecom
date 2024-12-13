@@ -6,28 +6,27 @@ const Navbar = () => {
   return (
     <>
       <nav className="">
-        <div className="flex items-center justify-around   shadow-sm">
+        <div className="flex items-center justify-around   shadow-sm bg-black text-white">
           <Link to={"/"}>
             <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTj-MM_UyJqsvN2GeGKQKLEHNaL-cfeoLa-Q&s"
+              src="https://caliber-kd-shoes.s3.ap-south-1.amazonaws.com/uploads/2024/09/03175513/cropped-logo-_calibershoes_header-1-1.png"
               alt="logo"
               width="80px"
               height="80px"
-              className="border-2 "
             />
           </Link>
           <div className="flex gap-5">
-            <Link className="text-sky-400" to="/">
+            <Link className="" to="/men">
               Men
             </Link>
             <Link to="/women">Women</Link>
             <Link to="/junior">Junior</Link>
           </div>
-          <div className="flex items- gap-4  ">
-            <input type="text" className="border-2" />
-            <Heart />
-            <ShoppingCart />
-            <User />
+          <div className="flex items- gap-4 text-black  ">
+            <input type="text" className="border-2 px-2" />
+            <Heart color="white" />
+            <ShoppingCart color="white" />
+            <User color="white" />
           </div>
         </div>
       </nav>

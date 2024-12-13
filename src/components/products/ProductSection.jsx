@@ -3,7 +3,6 @@ import { products } from "../../assets/Data";
 import Card from "../Card";
 
 const ProductSection = () => {
-  console.log(products);
   return (
     <div className="my-8">
       <div className="flex justify-between items-center py-6">

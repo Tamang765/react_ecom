@@ -19,6 +19,22 @@ export const getCategory = createAsyncThunk("getCategory", async () => {
   }
 });
 
+export const editPost = createAsyncThunk("edit post", async () => {
+  try {
+    const response = await axios.patch(
+      "https://jsonplaceholder.typicode.com/posts/1",
+      {
+        title: "Updated Post Title",
+        body: "Updated Post Body",
+        userId: 1,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
 const categorySlice = createSlice({
   name: "category",
   initialState,
