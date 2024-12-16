@@ -1,5 +1,12 @@
-import React from "react";
-import FilterByColor from "../components/filterbycolor/FilterByColor";
+import React, { useState } from "react";
+
+import { products } from "../assets/Data";
+import Card from "../components/Card";
+import {
+  FilterByColor,
+  FilterByPrice,
+  FilterBySize,
+} from "../components/filterbycolor/FilterByColor";
 
 const colorData = [
   {
@@ -13,14 +20,30 @@ const colorData = [
 ];
 
 const Men = () => {
+  const [count, setCount] = useState(4);
   return (
     <div className="min-h-screen">
-      <div className="w-full  grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
-        <div className=" col-span-1  border-4 px-2 ">
-          <h2 className="text-lg  font-semibold mb-3">Filter By Color</h2>
+      <div className="w-full  grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-2">
+        <div className=" col-span-1   px-2 flex flex-col  gap-4 ">
           <FilterByColor colors={colorData} />
+          <FilterBySize />
+          <FilterByPrice />
         </div>
-        <div className=" col-span-3 border-4 border-black">prdocut section</div>
+        <div className=" col-span-3">
+          {/* <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4"> */}
+          <div
+            className={`grid lg:grid-cols-${[
+              count,
+            ]} md:grid-cols-2 grid-cols-1 gap-4`}
+          >
+            {/* {products.map((product, index) => {
+            return <Card key={index} {...product} />;
+          })} */}
+            {products?.map((product, index) => (
+              <Card key={index} {...product} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
