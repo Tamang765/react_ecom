@@ -29,7 +29,7 @@ export const FilterBySize = () => {
           <input
             type="radio"
             name="size"
-            id="size"
+            id={item}
             className="w-4  aspect-square"
           />
           <h3>{item}</h3>
@@ -39,26 +39,24 @@ export const FilterBySize = () => {
   );
 };
 
-export const FilterByPrice = () => {
-  return (
-    <div>
-      <h2 className="text-lg  font-semibold mb-3">Filter By Price</h2>
-      <div className="flex gap-2 items-center ">
-        <input
-          type="number"
-          className="w-full border-2  px-1"
-          name="min"
-          placeholder="min"
-        />
-        -
-        <input
-          type="number"
-          className="w-full border-2  px-1"
-          name="max"
-          placeholder="max"
-        />
-        <button>Filter</button>
-      </div>
+export const FilterByPrice = () => (
+  <div>
+    <h2 className="text-lg  font-semibold mb-3">Filter By Price</h2>
+    <div className="flex gap-2 items-center ">
+      <input
+        type="number"
+        className="w-full border-2  px-1"
+        name="min"
+        placeholder="min"
+      />
+      -
+      <input
+        type="number"
+        className="w-full border-2  px-1"
+        name="max"
+        placeholder="max"
+      />
+      <button>Filter</button>
     </div>
-  );
-};
+  </div>
+);
