@@ -6,9 +6,7 @@ const initialState = {
   isLoading: false,
   dummy: DummyData,
   men: [],
-  women: [],
   filerByPrice: [],
-
   isError: false,
 };
 
@@ -46,10 +44,7 @@ const dummySlice = createSlice({
 
   reducers: {
     filterMen: (state) => {
-      state.men = state.dummy.filter((item) => item.category === "Male");
-    },
-    filterWomen: (state) => {
-      state.women = state.dummy.filter((item) => item.category === "Female");
+      state.men = state.dummy?.filter((mens) => mens.category === "Male");
     },
 
     filterByPrice: (state) => {

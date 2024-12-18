@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { Grid3x3, LayoutGrid } from "lucide-react";
-import { products } from "../assets/Data";
 import Card from "../components/Card";
 import {
   FilterByColor,
   FilterByPrice,
   FilterBySize,
 } from "../components/filterbycolor/FilterByColor";
+
+import { Grid3x3, LayoutGrid } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { filterMen } from "../redux/slice/filterSlice";
+
 const colorData = [
   {
     id: 1,
@@ -20,9 +23,18 @@ const colorData = [
 ];
 
 const Men = () => {
-  const [count, setCount] = useState(2);
   const [limit, setLimit] = useState(20);
+  const dispatch = useDispatch();
+  const men = useSelector((state) => state.filter.men);
 
+  const [gridCount, setGridCount] = useState(2);
+  console.log(gridCount);
+
+  useEffect(() => {
+    dispatch(filterMen());
+  }, [dispatch]);
+
+  console.log(men);
   return (
     <div className="min-h-screen">
       <div className="w-full  grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-2">
@@ -32,48 +44,30 @@ const Men = () => {
           <FilterByPrice />
         </div>
         <div className="col-span-3">
+          {/* <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4"> */}
           <div className="flex gap-4">
-            <button className="" onClick={() => setCount(2)}>
-              <LayoutGrid />
-            </button>
-            <button className="" onClick={() => setCount(3)}>
-              <Grid3x3 />
-            </button>
-            <button className="" onClick={() => setCount(4)}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="icon icon-tabler icons-tabler-outline icon-tabler-grid-4x4"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M3 6h18" />
-                <path d="M3 12h18" />
-                <path d="M3 18h18" />
-                <path d="M6 3v18" />
-                <path d="M12 3v18" />
-                <path d="M18 3v18" />
-              </svg>
-            </button>
+            <LayoutGrid onClick={() => setGridCount(2)} />
+            <Grid3x3 onClick={() => setGridCount(3)} />
+            <img
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAY1BMVEX///8cHBwdHR0dHRsHBwcAAADV1dXY2NgXFxUXFxcUFBLp6em8vLxTU1IEBACWlpZERENNTUsODg4+Pj4jIyHx8fH39/fAwMCLi4tGRkYNDQg1NTOYmJiurq5ycnIuLi5dXV3FnTvsAAADo0lEQVR4nO3d3VbaQBSGYTMJmkSQkIAQwo/3f5VNYg86/Qoz21UQ8H1Py0YfqeLBXtunJyIiIiK6r96fH6X3E8LnyaP0clKYPEbZGaFzzvBMbszysa8ycF6YlFl89fB8hWEg+/wEDBXDQG0YKEPCcrOexrbed4mrD/ED03VTuKKyDBxql3R7w+e0Kc8Lk2x94h//1WtVuMnOMPC0KFw5swzMM1e0K8PANAsJp4ZnG4Vzw8DXhNWrYeAuhe1dCcvUKHxL8/t6DRH+HUIJIUI/hBpCCaGEEKEfQg2hhFBCiNAPoYZQQighROiHUEMoIZQQIvRDqCGUEEoIEfoh1BBKFxBeeCfq24Wu3r/G99wULtsYBlZtnuaLlWFis03z5tkwsN+GdhO7qonP9QNHw0C1TNN0WRk6DgONYaBLA0KXFIbGZUrLQDqUG/rCQEh42dIrFBLWhnXqcSG2sCxgj6+I4fFv5TCxNUyUIWFx2M1j222O/cBH/MB81/XAzjLw0ROPG8PA4bs3aC//bvH28O/4CBF63aSQ37wReiHUEEoIJYQI/RBqCCWEEkKEfgg1hBJCCSFCP4QaQgmhhBChH0INoYRQQojQD6GGUEIoIfwJQsvW16q1bn3NrMJdLzTdTVyHdoSTZhFfOyzEdoaBWT+QLA0Di27YoLUMNMHty2HPtYzsc7819tFDw+MT60CaGwbyqA3aa+y5Xq7ga2j6eqW2L3CZDBOWAfOHCL6GSTWLb7EcFmINA7NlT1xaBrp8+D40DFQBofFnaZWnF96gtf8s/c+7ib3w1t4PESL0+gnCe/y9FOGfIdQQSgglhAj9EGoIJYQSQoR+CDWEEkIJIUI/hBpCCaGEEKEfQg2hhFBCiNAPoYZQQigh/AlC693E7NbuJoY2aItD/J3J+eftS8OA+fblfGa8fTk/FMH7pVl89Xi/1DCQjbuUb4Y+75eaBrhBa7kKfIt3hMMbtF0bfXa5bZbDLejWMDHego5//O9b0IbHt6Fb0Em9N1zbvtI978pwz3sVuuf9AFd2ecdH6IVQQyghlBAi9EOoIZQQSggR+iHUEEoIJYQI/RBqCCWEEkKEfgg1hBJCCSFCP4QaQgmhhBChH0INoXQDG7RX2Iky3U0MbtCWm2l8+y5x9cEwsG7y/iVZGyYOZZp3e8PAJvDX450rL75Bm1o2aMf1y63hI5TJ927QXqXz34cP0Rmh5T/c7TaZnBK+vzxK7yeERERERHSr/QIvglm9N8GDSgAAAABJRU5ErkJggg=="
+              alt=""
+              width={30}
+              className="h-6"
+              height={15}
+              onClick={() => setGridCount(4)}
+            />
           </div>
 
-          {/* <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4"> */}
           <div
-            className={`grid grid-cols-${count} gap-4`}
-            // className={`grid lg:grid-cols-${[
-            //   count,
-            // ]} md:grid-cols-2 grid-cols-1 gap-4`}
+            className={`grid  gap-4`}
+            style={{
+              gridTemplateColumns: `repeat(${gridCount}, minmax(0, 1fr))`,
+            }}
           >
             {/* {products.map((product, index) => {
             return <Card key={index} {...product} />;
           })} */}
-            {products?.slice(0, limit)?.map((product, index) => (
+            {men?.slice(0, limit)?.map((product, index) => (
               <Card key={index} {...product} />
             ))}
           </div>

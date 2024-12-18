@@ -2,6 +2,7 @@ export const products = [
   {
     id: 1,
     title: "Chickie",
+    
     // price: 70,
     // discouint: 96,
     image: "http://dummyimage.com/239x100.png/5fa2dd/ffffff",
