@@ -24,6 +24,10 @@ const colorData = [
 
 const Men = () => {
   const [limit, setLimit] = useState(20);
+
+  const [selectedColor, setSelectedColor] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+
   const dispatch = useDispatch();
   const men = useSelector((state) => state.filter.men);
 
@@ -31,15 +35,29 @@ const Men = () => {
   console.log(gridCount);
 
   useEffect(() => {
+    console.log("k xa");
     dispatch(filterMen());
   }, [dispatch]);
 
-  console.log(men);
+  useEffect(() => {
+    console.log("heello");
+
+    const filtered = men?.filter((product) =>
+      selectedColor.includes(product?.color)
+    );
+    setFilteredData(filtered);
+  }, [men, selectedColor]);
+
+  console.log(filteredData.length);
+
   return (
     <div className="min-h-screen">
       <div className="w-full  grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-2">
         <div className="col-span-1   px-2 flex flex-col  gap-4 ">
-          <FilterByColor colors={colorData} />
+          <FilterByColor
+            colors={colorData}
+            setSelectedColor={setSelectedColor}
+          />
           <FilterBySize />
           <FilterByPrice />
         </div>
@@ -67,9 +85,13 @@ const Men = () => {
             {/* {products.map((product, index) => {
             return <Card key={index} {...product} />;
           })} */}
-            {men?.slice(0, limit)?.map((product, index) => (
-              <Card key={index} {...product} />
-            ))}
+            {filteredData?.length
+              ? filteredData?.map((product, index) => (
+                  <Card key={index} {...product} />
+                ))
+              : men
+                  ?.slice(0, limit)
+                  ?.map((product, index) => <Card key={index} {...product} />)}
           </div>
         </div>
         <br />

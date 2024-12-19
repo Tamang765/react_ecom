@@ -23,7 +23,8 @@ const Navbar = () => {
             <Link to="/junior">Junior</Link>
           </div>
           <div className="flex items- gap-4 text-black  ">
-            <input type="text" className="border-2 px-2" />
+            <input type="text" className="border-2 px-2" placeholder="Search" />
+
             <Heart color="white" />
             <ShoppingCart color="white" />
             <User color="white" />

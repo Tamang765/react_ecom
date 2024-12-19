@@ -1,10 +1,20 @@
-export const FilterByColor = ({ colors }) => {
+export const FilterByColor = ({ colors, setSelectedColor }) => {
   return (
     <div>
       <h2 className="text-lg  font-semibold mb-3">Filter By Color</h2>
 
       {colors?.map((item) => (
-        <div className=" flex items-center gap-2 pb-2" key={item?.id}>
+        <div
+          className=" flex items-center gap-2 pb-2 border-2 "
+          key={item?.id}
+          onClick={() =>
+            setSelectedColor((prev) =>
+              prev.includes(item?.color)
+                ? prev?.filter((color) => color !== item?.color)
+                : [...prev, item?.color]
+            )
+          }
+        >
           <div
             className="w-6 aspect-square rounded-full shadow-xl"
             style={{
