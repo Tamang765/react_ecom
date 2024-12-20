@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import Card from "../components/Card";
 import {
@@ -9,7 +9,6 @@ import {
 
 import { Grid3x3, LayoutGrid } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { filterWomen } from "../redux/slice/filterSlice";
 
 const colorData = [
   {
@@ -22,15 +21,12 @@ const colorData = [
   { id: 5, color: "Green" },
 ];
 
-const Women = () => {
+const Search = () => {
   const [limit, setLimit] = useState(20);
   const dispatch = useDispatch();
   const women = useSelector((state) => state.filter.women);
   const men = useSelector((state) => state.filter.men);
 
-  useEffect(() => {
-    dispatch(filterWomen());
-  }, [dispatch]);
   const [gridCount, setGridCount] = useState(2);
   console.log(men);
 
@@ -79,4 +75,4 @@ const Women = () => {
   );
 };
 
-export default Women;
+export default Search;

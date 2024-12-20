@@ -6,6 +6,7 @@ import Contact from "./pages/contact/Index";
 import Home from "./pages/home/index";
 import Men from "./pages/men";
 import ProductDetail from "./pages/product";
+import Search from "./pages/search";
 import Women from "./pages/women";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/search" element={<Search />} />
         </Route>
       </Routes>
     </>

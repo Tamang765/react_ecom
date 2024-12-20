@@ -28,8 +28,10 @@ export const FilterByColor = ({ colors, setSelectedColor }) => {
   );
 };
 
-export const FilterBySize = () => {
+export const FilterBySize = ({ setSize, size }) => {
   const sizes = ["xxl", "xl", "l", "m", "s", "xs"];
+
+  console.log(size);
   return (
     <div>
       <h2 className="text-lg  font-semibold mb-3">Filter By Size</h2>
@@ -39,7 +41,9 @@ export const FilterBySize = () => {
           <input
             type="radio"
             name="size"
-            id={item}
+            id={size}
+            value={size}
+            onClick={() => setSize(item)}
             className="w-4  aspect-square"
           />
           <h3>{item}</h3>
@@ -49,24 +53,32 @@ export const FilterBySize = () => {
   );
 };
 
-export const FilterByPrice = () => (
-  <div>
-    <h2 className="text-lg  font-semibold mb-3">Filter By Price</h2>
-    <div className="flex gap-2 items-center ">
-      <input
-        type="number"
-        className="w-full border-2  px-1"
-        name="min"
-        placeholder="min"
-      />
-      -
-      <input
-        type="number"
-        className="w-full border-2  px-1"
-        name="max"
-        placeholder="max"
-      />
-      <button>Filter</button>
+export const FilterByPrice = ({ setPriceRange }) => {
+  return (
+    <div>
+      <h2 className="text-lg  font-semibold mb-3">Filter By Price</h2>
+      <div className="flex gap-2 items-center ">
+        <input
+          type="number"
+          className="w-full border-2  px-1"
+          name="min"
+          placeholder="min"
+          onChange={(e) =>
+            setPriceRange((prev) => ({ ...prev, min: e.target.value }))
+          }
+        />
+        -
+        <input
+          type="number"
+          className="w-full border-2  px-1"
+          name="max"
+          placeholder="max"
+          onChange={(e) =>
+            setPriceRange((prev) => ({ ...prev, max: e.target.value }))
+          }
+        />
+        <button>Filter</button>
+      </div>
     </div>
-  </div>
-);
+  );
+};

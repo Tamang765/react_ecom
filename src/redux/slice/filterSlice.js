@@ -16,9 +16,14 @@ const filterSlice = createSlice({
         (item) => item?.category?.toLowerCase() === "male"
       );
     },
+    filterWomen: (state) => {
+      state.women = state.data?.filter(
+        (item) => item?.category?.toLowerCase() === "female"
+      );
+    },
   },
 });
 
-export const { filterMen } = filterSlice.actions;
+export const { filterMen, filterWomen } = filterSlice.actions;
 
 export default filterSlice.reducer;

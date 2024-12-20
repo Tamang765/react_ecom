@@ -2,7 +2,7 @@ export const DummyData = [
   {
     id: 1,
     product_name: "Rum - Cream, Amarula",
-    category: "Genderqueer",
+    category: "Male",
     size: "3XL",
     color: "Goldenrod",
     price: "$8.24",

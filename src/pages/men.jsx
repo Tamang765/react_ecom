@@ -26,29 +26,51 @@ const Men = () => {
   const [limit, setLimit] = useState(20);
 
   const [selectedColor, setSelectedColor] = useState([]);
+
+  const [size, setSize] = useState("");
+
+  const [priceRange, setPriceRange] = useState({
+    min: 0,
+    max: 0,
+  });
+
   const [filteredData, setFilteredData] = useState([]);
 
   const dispatch = useDispatch();
   const men = useSelector((state) => state.filter.men);
 
   const [gridCount, setGridCount] = useState(2);
-  console.log(gridCount);
 
   useEffect(() => {
-    console.log("k xa");
     dispatch(filterMen());
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("heello");
+    let filtered = men;
 
-    const filtered = men?.filter((product) =>
-      selectedColor.includes(product?.color)
-    );
+    if (selectedColor?.length) {
+      filtered = filtered?.filter((product) =>
+        selectedColor.includes(product?.color)
+      );
+    }
+
+    if (priceRange?.min || priceRange?.max) {
+      filtered = filtered?.filter(
+        (product) =>
+          +product?.price?.replace("$", "") > priceRange?.min ||
+          +product?.price.replace("$", "") < priceRange?.max
+      );
+    }
+
+    if (size) {
+      filtered = filtered?.filter(
+        (product) => product?.size.toLowerCase() === size
+      );
+    }
+    console.log(filtered);
+
     setFilteredData(filtered);
-  }, [men, selectedColor]);
-
-  console.log(filteredData.length);
+  }, [men, selectedColor, size, priceRange]);
 
   return (
     <div className="min-h-screen">
@@ -58,10 +80,29 @@ const Men = () => {
             colors={colorData}
             setSelectedColor={setSelectedColor}
           />
-          <FilterBySize />
-          <FilterByPrice />
+
+          <button
+            className=" bg-red-300 text-white p-2 cursor-pointer"
+            onClick={() => setSelectedColor([])}
+          >
+            Reset Color
+          </button>
+
+          <FilterBySize setSize={setSize} size={size} />
+          <button
+            className=" bg-red-300 text-white p-2 cursor-pointer"
+            onClick={() => setSize("")}
+          >
+            Reset Size
+          </button>
+          <FilterByPrice setPriceRange={setPriceRange} />
         </div>
         <div className="col-span-3">
+          <div className="flex gap-2">
+            {selectedColor?.map((color) => (
+              <div>{color}/</div>
+            ))}
+          </div>
           {/* <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4"> */}
           <div className="flex gap-4">
             <LayoutGrid onClick={() => setGridCount(2)} />
@@ -85,13 +126,21 @@ const Men = () => {
             {/* {products.map((product, index) => {
             return <Card key={index} {...product} />;
           })} */}
-            {filteredData?.length
-              ? filteredData?.map((product, index) => (
+            {selectedColor?.length || size ? (
+              !filteredData?.length ? (
+                <p className="text-center">
+                  Showing {filteredData?.length} out of {men?.length} products
+                </p>
+              ) : (
+                filteredData?.map((product, index) => (
                   <Card key={index} {...product} />
                 ))
-              : men
-                  ?.slice(0, limit)
-                  ?.map((product, index) => <Card key={index} {...product} />)}
+              )
+            ) : (
+              men
+                ?.slice(0, limit)
+                ?.map((product, index) => <Card key={index} {...product} />)
+            )}
           </div>
         </div>
         <br />

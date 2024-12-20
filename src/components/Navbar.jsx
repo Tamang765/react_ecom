@@ -1,8 +1,13 @@
-import { Heart, ShoppingCart, User } from "lucide-react";
-import React from "react";
-import { Link } from "react-router-dom";
+import { Heart, Search, ShoppingCart, User } from "lucide-react";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const [searchText, setSearchText] = useState("");
+
+  const navigate = useNavigate();
+
+  console.log(searchText);
   return (
     <>
       <nav className="">
@@ -23,7 +28,19 @@ const Navbar = () => {
             <Link to="/junior">Junior</Link>
           </div>
           <div className="flex items- gap-4 text-black  ">
-            <input type="text" className="border-2 px-2" placeholder="Search" />
+            <div className="relative ">
+              <input
+                type="text"
+                className="border-2 p-2"
+                placeholder="Search"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+              <Search
+                className="absolute right-2 top-2"
+                onClick={() => navigate(`/search?s=${searchText}`)}
+              />
+            </div>
 
             <Heart color="white" />
             <ShoppingCart color="white" />
