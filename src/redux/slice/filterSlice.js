@@ -5,6 +5,9 @@ const initialState = {
   data: DummyData,
   men: [],
   women: [],
+  searchData: [],
+
+  cartData: [],
 };
 
 const filterSlice = createSlice({
@@ -21,9 +24,18 @@ const filterSlice = createSlice({
         (item) => item?.category?.toLowerCase() === "female"
       );
     },
+    searchFunc: (state, action) => {
+      state.searchData = state.data.filter((item) =>
+        item?.product_name?.toLowerCase().includes(action.payload.toLowerCase())
+      );
+    },
+    cartFunc: (state, action) => {
+      state.cartData.push({ ...action.payload, quantity: 1 });
+    },
   },
 });
 
-export const { filterMen, filterWomen } = filterSlice.actions;
+export const { filterMen, filterWomen, searchFunc, cartFunc } =
+  filterSlice.actions;
 
 export default filterSlice.reducer;

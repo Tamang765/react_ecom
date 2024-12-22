@@ -1,7 +1,7 @@
 export const DummyData = [
   {
     id: 1,
-    product_name: "Rum - Cream, Amarula",
+    product_name: "test",
     category: "Male",
     size: "3XL",
     color: "Goldenrod",

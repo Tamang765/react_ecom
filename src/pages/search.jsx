@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Card from "../components/Card";
 import {
@@ -9,6 +9,8 @@ import {
 
 import { Grid3x3, LayoutGrid } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
+import { searchFunc } from "../redux/slice/filterSlice";
 
 const colorData = [
   {
@@ -24,11 +26,15 @@ const colorData = [
 const Search = () => {
   const [limit, setLimit] = useState(20);
   const dispatch = useDispatch();
-  const women = useSelector((state) => state.filter.women);
-  const men = useSelector((state) => state.filter.men);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchData = useSelector((state) => state.filter.searchData);
 
   const [gridCount, setGridCount] = useState(2);
-  console.log(men);
+  const searchQuery = searchParams?.get("s");
+
+  useEffect(() => {
+    dispatch(searchFunc(searchQuery));
+  }, [dispatch, searchQuery]);
 
   return (
     <div className="min-h-screen">
@@ -39,8 +45,13 @@ const Search = () => {
           <FilterByPrice />
         </div>
         <div className="col-span-3">
+          <h3 className="text-2xl font-bold">
+            Search For {searchQuery || ""}{" "}
+          </h3>
+
+          <br />
           {/* <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4"> */}
-          <div className="flex gap-4">
+          <div className="flex gap-4 justify-end">
             <LayoutGrid onClick={() => setGridCount(2)} />
             <Grid3x3 onClick={() => setGridCount(3)} />
             <img
@@ -61,8 +72,14 @@ const Search = () => {
             {/* {products.map((product, index) => {
             return <Card key={index} {...product} />;
           })} */}
-            {women?.slice(0, limit)?.map((product, index) => (
-              <Card key={index} {...product} />
+            {searchData?.map((product, index) => (
+              <div className="flex flex-col">
+                <Card key={index} {...product} />
+                <button>+</button>
+                <button>-</button>
+
+                <span>price {}</span>
+              </div>
             ))}
           </div>
         </div>

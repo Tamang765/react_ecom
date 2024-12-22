@@ -7,7 +7,6 @@ const Navbar = () => {
 
   const navigate = useNavigate();
 
-  console.log(searchText);
   return (
     <>
       <nav className="">
@@ -43,7 +42,7 @@ const Navbar = () => {
             </div>
 
             <Heart color="white" />
-            <ShoppingCart color="white" />
+            <ShoppingCart color="white" onClick={() => navigate("/cart")} />
             <User color="white" />
           </div>
         </div>
