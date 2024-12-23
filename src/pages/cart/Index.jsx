@@ -1,22 +1,18 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { updateQuantity } from "../../redux/slice/filterSlice";
 
 const Cart = () => {
-  const [quantity, setQuantity] = React.useState(1);
   const cart = useSelector((state) => state.filter.cartData);
 
+  console.log(cart);
   return (
     <div>
       <h2 className="text-center text-xl  font-semibold">My Cart</h2>
       <hr />
       {cart?.map((item) => (
-        <CartItem
-          setQuantity={setQuantity}
-          quantity={quantity}
-          key={item?.id}
-          {...item}
-        />
+        <CartItem quantity={item?.quantity} key={item?.id} {...item} />
       ))}
     </div>
   );
@@ -24,23 +20,22 @@ const Cart = () => {
 
 export default Cart;
 
-function CartItem({ setQuantity, quantity, ...item }) {
-  console.log(item);
+function CartItem({ quantity, ...item }) {
   return (
     <div className="grid grid-cols-3 justify-center items-center gap-8 border-b-2">
       <div className=" col-span-1">
         <div className=" group-hover:shadow-2xl h-full   flex  justify-between   ">
+          <img
+            src={item?.image}
+            // src={props?.image}
+            width={300}
+            alt="earbuds"
+            className=" aspect-video group-hover:scale-110 duration-300"
+          />
           <Link to={`/product`} className="">
-            <div className="flex w-fit items-center">
-              <img
-                src={item?.image}
-                // src={props?.image}
-
-                alt="earbuds"
-                className="w-1/4 aspect-video group-hover:scale-110 duration-300"
-              />
+            <div className="flex items-center">
               <div className="p-4 flex  flex-col">
-                <h1 className="text-lg font-bold">{item?.title}</h1>
+                <h1 className="text-lg font-bold">{item?.product_name}</h1>
                 {/* <span>color:red</span>
                 <span>size:xxl</span> */}
               </div>
@@ -51,26 +46,29 @@ function CartItem({ setQuantity, quantity, ...item }) {
 
       <div className=" col-span-2 flex  items-center gap-8">
         <span> price: Rs.{item?.price}</span>
-        <QuantityFunc setQuantity={setQuantity} quantity={quantity} />
-        <span> total: </span>
+        <QuantityFunc id={item?.id} quantity={quantity} />
+        <span> Total Price: {+item?.price?.replace("$", "") * +quantity} </span>
       </div>
     </div>
   );
 }
 
-function QuantityFunc({ setQuantity, quantity }) {
+function QuantityFunc({ id, quantity }) {
+  console.log(id);
+  const dispatch = useDispatch();
   return (
     <div className="flex gap-4 items-center">
       <button
         className="border-2 border-black p-2"
-        onClick={() => (quantity > 0 ? setQuantity(quantity - 1) : quantity)}
+        onClick={() => dispatch(updateQuantity({ id, quantity: quantity - 1 }))}
+        disabled={quantity <= 1}
       >
         -
       </button>
       <span>{quantity}</span>
       <button
         className="border-2 border-black p-2"
-        onClick={() => setQuantity(quantity + 1)}
+        onClick={() => dispatch(updateQuantity({ id, quantity: quantity + 1 }))}
       >
         +
       </button>

@@ -1,8 +1,10 @@
 import React from "react";
-import { products } from "../../assets/Data";
+import { useSelector } from "react-redux";
 import Card from "../Card";
 
 const ProductSection = () => {
+  const products = useSelector((state) => state.filter.data);
+
   return (
     <div className="my-8">
       <div className="flex justify-between items-center py-6">

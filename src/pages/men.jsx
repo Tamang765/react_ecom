@@ -54,11 +54,15 @@ const Men = () => {
       );
     }
 
-    if (priceRange?.min || priceRange?.max) {
+    if (priceRange?.min) {
       filtered = filtered?.filter(
-        (product) =>
-          +product?.price?.replace("$", "") > priceRange?.min ||
-          +product?.price.replace("$", "") < priceRange?.max
+        (product) => +product?.price?.replace("$", "") > priceRange?.min
+      );
+    }
+
+    if (priceRange?.max) {
+      filtered = filtered?.filter(
+        (product) => +product?.price.replace("$", "") < priceRange?.max
       );
     }
 

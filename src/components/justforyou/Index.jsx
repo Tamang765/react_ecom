@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { products } from "../../assets/Data";
+import { useSelector } from "react-redux";
 import Card from "../Card";
 
 const Index = () => {
   const [limit, setLimit] = useState(5);
+  const products = useSelector((state) => state.filter.data);
 
   const handleClick = () => {
     setLimit(limit + 5);

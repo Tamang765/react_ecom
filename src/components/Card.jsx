@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { cartFunc } from "../redux/slice/filterSlice";
 const Card = (props) => {
   const dispatch = useDispatch();
+  console.log(props);
   return (
     <div className="group border-2  border-black/30 rounded-sm">
       <div className=" group-hover:shadow-2xl h-full   flex flex-col justify-between   ">
