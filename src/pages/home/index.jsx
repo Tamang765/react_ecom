@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CategorySection from "../../components/category/Index";
 import JustForYOu from "../../components/justforyou/Index";
+import Login from "../../components/login";
 import ProductSection from "../../components/products/ProductSection";
 import { getCategory } from "../../redux/slice/categorySlice";
 
@@ -14,10 +15,9 @@ const Home = () => {
 
   const cart = useSelector((state) => state.filter.cartData);
 
-  console.log(cart);
-
   return (
     <div>
+      <Login />
       <div className="bg-root_img">
         <ProductSection />
         <CategorySection />

@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { cartFunc } from "../redux/slice/filterSlice";
 const Card = (props) => {
   const dispatch = useDispatch();
-  console.log(props);
+
+  const [test, setTest] = useState(false);
   return (
     <div className="group border-2  border-black/30 rounded-sm">
       <div className=" group-hover:shadow-2xl h-full   flex flex-col justify-between   ">
@@ -26,10 +26,17 @@ const Card = (props) => {
         </Link>
         <button
           className="border-t-2 border-black p-2 w-full"
-          onClick={() => dispatch(cartFunc(props))}
+          // onClick={() => dispatch(cartFunc(props))}
+          onClick={() => setTest(true)}
         >
           Add to Cart
         </button>
+
+        {test && (
+          <div className="fixed inset-0  p-4 bg-white rounded-md shadow-md opacity-70">
+            <p>Item added to cart</p>
+          </div>
+        )}
       </div>
     </div>
   );

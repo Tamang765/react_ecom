@@ -1,6 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { cartFunc } from "../../redux/slice/filterSlice";
 
 const ProductDetail = () => {
+  const { id } = useParams();
+  const [singleProduct, setSingleProduct] = useState(null);
+  const products = useSelector((state) => state.filter.data);
+  // TODO: state for size
+
+  const [userSize, setUserSize] = useState(null);
+
+  useEffect(() => {
+    //filter product data from dummy data
+    const productData = products?.find((product) => product.id === +id);
+    setSingleProduct(productData);
+  }, [id, products]);
+
   const [productImage, setProductImage] = useState(
     "https://caliber-kd-shoes.s3.ap-south-1.amazonaws.com/uploads/2023/06/19184235/669S-WT-4-150x150.jpg"
   );
@@ -14,7 +30,11 @@ const ProductDetail = () => {
       {/* <BreadCrumb /> */}
       <div className="grid lg:grid-cols-2 grid-cols-1 gap-2 ">
         <div className=" border-black overflow-hidden h-fit ">
-          <img src={productImage} alt="shoes" className=" w-full h-3/5 " />
+          <img
+            src={singleProduct?.image}
+            alt="shoes"
+            className=" w-full h-3/5 "
+          />
           <div className="flex gap-2 mt-1">
             <img
               src="https://caliber-kd-shoes.s3.ap-south-1.amazonaws.com/uploads/2023/06/19184235/669S-WT-4-150x150.jpg"
@@ -68,47 +88,40 @@ const ProductDetail = () => {
           </div>
         </div>
         <div className=" p-8 h-fit">
-          <h1 className="text-2xl font-semibold">Product Name</h1>
+          <h1 className="text-2xl font-semibold">
+            {singleProduct?.product_name}
+          </h1>
           <br />
           <p>
             Price:
-            <span>233</span>
+            <span>{singleProduct?.price}</span>
           </p>
           <ul className="list-disc">
-            <li>Color:black</li>
-            <li>Brand:Nike</li>
-            <li>Hill-shape:Flat</li>
+            <li>Color:{singleProduct?.color}</li>
           </ul>
           <br />
           <label for="Size" className="text-xl font-semibold">
             Size:
           </label>
           <div className="flex flex-wrap gap-4  items-center mt-4">
-            <div className="border-2 min-w-10 w-fit flex  gap-4 p-2">
-              <input type="radio" id="l" name="size" value="L" />{" "}
-              <label for="l">L</label>
-            </div>
-            <br />
-            <div className="border-2 min-w-10 w-fit flex  gap-4 p-2">
-              <input type="radio" id="m" name="size" value="M" />{" "}
-              <label for="m">M</label>
-            </div>
-            <br />
-            <div className="border-2 min-w-10 w-fit flex  gap-4 p-2">
-              <input type="radio" id="s" name="size" value="S" />{" "}
-              <label for="s">S</label>
-            </div>
-            <br />
-            <div className="border-2 min-w-10 w-fit flex  gap-4 p-2">
-              <input type="radio" id="xs" name="size" value="Xs" />
-              <label for="xs">Xs</label>
-            </div>
+            {["xl", "l", "m", "s", "xs"]?.map((size) => (
+              <div className="border-2 min-w-10 w-fit flex  gap-4 p-2">
+                <input
+                  type="radio"
+                  id={size}
+                  name="size"
+                  value={size}
+                  onClick={() => setUserSize(size)}
+                />{" "}
+                <label htmlFor={size}>{size.toUpperCase()}</label>
+              </div>
+            ))}
           </div>
           <div className="my-3">
             <label for="Quantity" className="text-xl font-semibold my-2">
               Quantity:
             </label>
-            <AddToCart />
+            <AddToCart size={userSize} product={singleProduct} />
           </div>
         </div>
       </div>
@@ -133,8 +146,9 @@ const ProductDetail = () => {
 
 export default ProductDetail;
 
-const AddToCart = () => {
+const AddToCart = ({ size, product }) => {
   const [itemCount, setItemCount] = useState(0);
+  const dispatch = useDispatch();
   const handleIncrement = () => {
     setItemCount(itemCount + 1);
   };
@@ -143,6 +157,16 @@ const AddToCart = () => {
       setItemCount(itemCount - 1);
     }
   };
+
+  function handleAddToCart() {
+    const data = {
+      ...product,
+      size,
+      quantity: itemCount,
+    };
+    dispatch(cartFunc(data));
+  }
+
   return (
     <>
       <div className="flex items-center gap-2 text-xl mt-3">
@@ -154,7 +178,10 @@ const AddToCart = () => {
           +
         </div>
       </div>
-      <button className="border-2 bg-black text-white p-2 mt-2">
+      <button
+        className="border-2 bg-black text-white p-2 mt-2"
+        onClick={handleAddToCart}
+      >
         Add to Cart
       </button>
     </>

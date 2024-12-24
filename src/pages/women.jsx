@@ -26,13 +26,11 @@ const Women = () => {
   const [limit, setLimit] = useState(20);
   const dispatch = useDispatch();
   const women = useSelector((state) => state.filter.women);
-  const men = useSelector((state) => state.filter.men);
 
   useEffect(() => {
     dispatch(filterWomen());
   }, [dispatch]);
   const [gridCount, setGridCount] = useState(2);
-  console.log(men);
 
   return (
     <div className="min-h-screen">

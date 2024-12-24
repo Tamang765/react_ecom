@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import { DummyData } from "../../assets/MOCK_DATA";
 
 const initialState = {
@@ -30,18 +31,26 @@ const filterSlice = createSlice({
       );
     },
     cartFunc: (state, action) => {
-      console.log(action.payload);
-
       const exisitingData = state.cartData?.find(
         (c) => c.id === action.payload?.id
       );
 
       if (exisitingData) {
-        window.alert("this product already exists");
+        toast.warning("this product already exists");
         return;
       }
-      
+
+      if (action.payload.quantity) {
+        state.cartData.push({
+          ...action.payload,
+          quantity: action.payload.quantity,
+        });
+        toast.success("Product added to cart");
+        return;
+      }
+
       state.cartData.push({ ...action.payload, quantity: 1 });
+      toast.success("Product added to cart");
     },
 
     updateQuantity: (state, action) => {

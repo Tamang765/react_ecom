@@ -71,7 +71,6 @@ const Men = () => {
         (product) => product?.size.toLowerCase() === size
       );
     }
-    console.log(filtered);
 
     setFilteredData(filtered);
   }, [men, selectedColor, size, priceRange]);

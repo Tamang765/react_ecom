@@ -6,7 +6,6 @@ import { updateQuantity } from "../../redux/slice/filterSlice";
 const Cart = () => {
   const cart = useSelector((state) => state.filter.cartData);
 
-  console.log(cart);
   return (
     <div>
       <h2 className="text-center text-xl  font-semibold">My Cart</h2>
@@ -54,7 +53,6 @@ function CartItem({ quantity, ...item }) {
 }
 
 function QuantityFunc({ id, quantity }) {
-  console.log(id);
   const dispatch = useDispatch();
   return (
     <div className="flex gap-4 items-center">

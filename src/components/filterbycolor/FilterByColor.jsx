@@ -31,7 +31,6 @@ export const FilterByColor = ({ colors, setSelectedColor }) => {
 export const FilterBySize = ({ setSize, size }) => {
   const sizes = ["xxl", "xl", "l", "m", "s", "xs"];
 
-  console.log(size);
   return (
     <div>
       <h2 className="text-lg  font-semibold mb-3">Filter By Size</h2>
