@@ -1,11 +1,10 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import '../../style.css'
 
 const Footer = () => {
   return (
     <footer className="bg-blue-950 shadow-md font-sans tracking-wide relative px-2">
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 lg:gap-24 gap-y-16 py-4 px-2 mx-auto w-full lg:w-5/6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 md:grid-cols-4 lg:gap-24 gap-y-16 py-4 px-2 mx-auto lg:w-[90%] md:w-[90%] sm:w-[95%] w-[95%] max-w-7xl">
         <div>
           <h2 className="text-white text-lg font-semibold mb-4">Our Stores</h2>
           <ul className="space-y-4">
@@ -53,7 +52,7 @@ const Footer = () => {
           </ul>
         </div>
 
-        <div className="flex items-center lg:justify-center">
+        <div className="flex items-center lg:justify-center md:hidden lg:flex">
           <Link to='/'><img src="/img/logo.jpg" alt="logo" className='w-40 rounded-full' /></Link>
         </div>
       </div>
@@ -62,7 +61,7 @@ const Footer = () => {
 
       
       {/* footer section lower part */}
-      <div className="flex justify-between flex-wrap gap-6 pb-4 px-2 mx-auto w-full max-w-screen-xl">
+      <div className="flex justify-between flex-wrap gap-6 pb-4 px-2 mx-auto  max-w-7xl lg:w-[90%] md:w-[90%] sm:w-[95%] w-[95%]">
         {/* <div className="mx-auto w-4/5 lg:w-5/6 max-w-screen-xl grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-y-4 md:gap-y-5 justify-items-center"></div> */}
         <div className="flex space-x-5">
           <Link to="https://www.facebook.com/profile.php?id=100086199323511" target='_blank' className="text-white transition-all">

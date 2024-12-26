@@ -1,23 +1,70 @@
-@import url('https://fonts.googleapis.com/css2?family=Nerko+One&display=swap');
-*{
-    font-family: 'Poppins', sans-serif;
+@import url("https://fonts.googleapis.com/css2?family=Nerko+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+* {
+  font-family: "Poppins", sans-serif;
 }
-.button-text span, .e-text {
-  
-    
-    line-height: 0.6;
-    font-family: "Nerko One", cursive;
-    letter-spacing: 1.5px;
+.button-text span,
+.e-text {
+  line-height: 0.6;
+  font-family: "Nerko One", cursive;
+  letter-spacing: 1.5px;
+}
+
+.Playfair_font {
+  font-family: "Playfair Display", serif;
+}
+.carousel_font {
+  font-family: "Gloria Hallelujah", serif;
 }
 @keyframes rotate-360 {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+  from {
+    transform: rotate(0deg);
   }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
-  .rotate-animation:hover {
-    animation: rotate-360 0.5s ease-out forwards;
-  }
+.rotate-animation:hover {
+  animation: rotate-360 0.5s ease-out forwards;
+}
+
+.slick-dots {
+  position: relative !important;
+  bottom: 0px !important;
+}
+
+.slick-dots li {
+  height: 15px !important;
+  width: 15px !important;
+  background: rgb(223, 219, 219) !important;
+  border-radius: 50% !important;
+}
+
+.slick-dots .slick-active {
+  height: 15px !important; /* Increase height for active dot */
+  width: 15px !important; /* Increase width for active dot */
+  background: #172554 !important;
+  border: 2px solid#172554; /* Border for active dot */
+}
+
+.slick-dots button::before {
+  height: 100% !important;
+  width: 100% !important;
+  border-radius: 50%;
+  color: transparent !important;
+  background: rgb(223, 219, 219) !important;
+}
+.slick-dots button {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.slick-dots .slick-active button::before {
+  background: #172554 !important;
+}
+
+.slick-list {
+  height: 100% !important;
+}

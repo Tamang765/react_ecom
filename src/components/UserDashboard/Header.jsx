@@ -1,332 +1,210 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import '../../style.css'
+import { ShoppingCart, User, Menu, X, MapPin, Phone } from "lucide-react";
+import "../../style.css";
 
 const Header = () => {
-  // define and assign ref
+  const [isScrolled, setIsScrolled] = useState(false);
   const toggleOpenRef = useRef(null);
   const toggleCloseRef = useRef(null);
   const collapseMenuRef = useRef(null);
 
-  // handling events
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   useEffect(() => {
     const handleClick = () => {
-      if (collapseMenuRef.current.style.display === "block") {
-        collapseMenuRef.current.style.display = "none";
-      } else {
-        collapseMenuRef.current.style.display = "block";
+      if (collapseMenuRef.current) {
+        collapseMenuRef.current.style.display = collapseMenuRef.current.style.display === "block" ? "none" : "block";
       }
     };
 
     const toggleOpen = toggleOpenRef.current;
     const toggleClose = toggleCloseRef.current;
 
-    if (toggleOpen) {
-      toggleOpen.addEventListener("click", handleClick);
-    }
-    if (toggleClose) {
-      toggleClose.addEventListener("click", handleClick);
-    }
+    if (toggleOpen) toggleOpen.addEventListener("click", handleClick);
+    if (toggleClose) toggleClose.addEventListener("click", handleClick);
 
-    // Clean up the event listeners on unmount
     return () => {
-      if (toggleOpen) {
-        toggleOpen.removeEventListener("click", handleClick);
-      }
-      if (toggleClose) {
-        toggleClose.removeEventListener("click", handleClick);
-      }
+      if (toggleOpen) toggleOpen.removeEventListener("click", handleClick);
+      if (toggleClose) toggleClose.removeEventListener("click", handleClick);
     };
   }, []);
 
   return (
-    <>
-
-      <div className="head bg-blue-950 h-16 lg:h-10 flex justify-between items-center px-3  md:px-20 lg:px-20 ">
-        <div className="empty text-white uppercase text-xs lg:text-sm text-start ">
-          <i className="fa-solid fa-location-dot me-2 "></i>
-          Samakhusi, <span className="ms-2 md:ms-0">kathmandu</span>
-
+    <div className="w-full h-full sticky top-0 z-50">
+      {/* Top Bar */}
+      <div className="bg-gradient-to-r from-blue-950 to-blue-800 ">
+        <div className="w-[95%] lg:w-[90%] md:w-[90%] sm:w-[95%] mx-auto flex items-center  text-white/90 text-sm h-10 max-w-7xl ">
+          <div className="flex-1 flex items-center">
+            <MapPin className="w-4 h-4 mr-2" />
+            <span className="text-xs uppercase tracking-wide">Samakhusi, Kathmandu</span>
+          </div>
+          <div className="flex-1 text-center cursor-pointer hidden lg:flex md:flex sm:hidden">
+            <span className="inline-block bg-white/10 px-4 py-1 rounded-full text-xs uppercase tracking-wider transform hover:scale-105 transition-transform">Up to 40% Off Selected Items</span>
+          </div>
+          <Link to="tel:+9779860578585" className="flex-1 flex items-center justify-end hover:text-white transition-colors">
+            <Phone className="w-4 h-4 mr-2" />
+            <span className="text-xs">+977 9860578585</span>
+          </Link>
         </div>
-        <div className="info text-white ms-0 lg:ms-18 uppercase text-xs text-center">
-
-          up to 40% Off to our favourites
-        </div>
-        <div className="contact-info text-white text-xs lg:text-sm text-end">
-          <Link to="tel:+9779860578585">
-            <i class="fa-solid fa-phone me-1"></i>
-            <span className="">+977</span> 9860578585</Link>
-        </div>
-
       </div>
-      <header className="flex shadow-md py-1 bg-[#d6eaf8] font-[sans-serif] min-h-[70px] tracking-wide relative z-50 ">
-        <div className='flex flex-wrap items-center justify-between gap-5 mx-auto  w-full  px-5 md:px-20 '>
-          <Link to={'/'}>
 
-            <div className="button-container">
-              <button className="brutalist-button openai button-1 rounded-full w-26 h-16 mt-0 lg:mt-2 flex lg:block items-center">
-                <div className="openai-logo">
-                  <img src="/img/logo.jpg" alt="logo" className='w-12 lg:w-8 rounded-full mx-auto shadow-md shadow-blue-900' />
-                </div>
-                <div className="button-text mt-1">
-                  <span className="text-2xl lg:text-base font-semibold text-teal-600 text-shadow-sm  ms-2 lg:ms-0">Eagle Trend</span>
-                </div>
-              </button>
+      {/* Main Header */}
+      <div className="sticky top-0 z-50">
+        <header className={`bg-white/95 backdrop-blur-md shadow-md transition-all duration-300`}>
+          <div className="w-[95%] lg:w-[90%] md:w-[90%] sm:w-[95%] mx-auto    flex items-center justify-between max-w-7xl lg:py-0  md:py-3 sm:py-3">
+            {/* Logo */}
+            <Link to="/" className="flex items-center space-x-3 group">
+              <div className="relative">
+                <img src="/img/logo.jpg" alt="Eagle Trend" className="w-12 h-12 rounded-full shadow-lg transition-transform group-hover:scale-110" />
+                <div className="absolute inset-0 rounded-full bg-blue-500/20 group-hover:bg-blue-500/30 transition-colors" />
+              </div>
+              <span className="font-bold text-xl bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">Eagle Trend</span>
+            </Link>
+
+            {/* Navigation */}
+            <div id="collapseMenu" ref={collapseMenuRef} className="hidden lg:block">
+              <nav className="flex items-center space-x-2">
+                <NavLink to="/" label="Home" />
+                <NavDropdown label="Men" link="mens" items={menItems} />
+                <NavDropdown label="Women" link="womens" items={womenItems} />
+                <NavDropdown label="Kids" link="kids" items={kidsItems} />
+                <NavLink to="/sale" label="Sale" />
+                <NavLink to="/clearance" label="Clearance" />
+              </nav>
             </div>
 
-          </Link>
-          <div id="collapseMenu" ref={collapseMenuRef} className='max-lg:hidden lg:!block max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-50 max-lg:before:inset-0 max-lg:before:z-50'>
-            <button id="toggleClose" ref={toggleCloseRef} className='lg:hidden fixed top-2 right-4 z-[100] rounded-full bg-white p-3'>
-              <i class="fa-solid fa-xmark text-blue-900 text-2xl"></i>
-            </button>
-            <ul
-              className='lg:flex gap-x-5 max-lg:space-y-3 max-lg:fixed max-lg:bg-white max-lg:w-1/2 max-lg:min-w-[300px] max-lg:top-0 max-lg:right-0 max-lg:p-6 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50 font-poppins uppercase'>
-              <li className='mb-6 hidden max-lg:block'>
-                <Link to={"/"} className='flex space-x-5 content-center'><img src="/img/logo.jpg" alt="logo" className='w-16 rounded-full' /><h2 className="text-lg font-semibold text-teal-600 text-shadow-sm ms-2 lg:ms-0 e-text">E-Trend</h2>
-                </Link>
-              </li>
-              <li className='max-lg:border-b border-gray-300 max-lg:py-3 px-3 f'>
-                <Link to='/'
-                  className='hover:text-primary text-blue-500 block font-[500] text-[13px]'>Home</Link>
-              </li>
-              {/* <li className='max-lg:border-b border-gray-300 max-lg:py-3 px-3'><Link to='/mens'
-                className='hover:text-primary text-[#1F1F1F] block font-medium text-[13px]'>Mens</Link>
-                
-              </li> */}
-              <li class='group max-lg:border-b border-gray-300 max-lg:py-3 px-3 relative'>
-                <Link to='/mens'
-                  class='hover:text-primary  text-[#1F1F1F] block font-medium text-[13px]'>Men
-                </Link>
-                <ul
-                  class='absolute top-5 max-lg:top-8 left-[-30px] md:left-0 z-50  shadow-lg bg-teal-600 text-white max-h-0 overflow-hidden min-w-[450px] lg:min-w-[650px] group-hover:opacity-100 group-hover:max-h-[700px] px-6 group-hover:pb-4 group-hover:pt-6 transition-all duration-500 flex flex-wrap justify-evenly'>
-                  <li class=''>
-                    <Link to=''
-                      class=' font-medium text-[15px]'>
-
-                      New Arrivals
-                    </Link>
-                    <ul className="mt-1 text-[12px]">
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/mens">T-shirts</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/mens">Shirts</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/mens">Pant</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/mens">Trouser</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/mens">Jogger</Link></li>
-                    </ul>
-                  </li>
-                  <li class=''>
-                    <Link to=''
-                      class='  font-medium text-[15px]'>
-
-                      Tops
-                    </Link>
-                    <ul className="mt-1 text-[12px] ">
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/mens">T-shirts</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/mens">Shirts</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/mens">Sweater</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/mens">Hoddie</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/mens">Jackets</Link></li>
-                    </ul>
-
-                  </li>
-                  <li class=''>
-                    <Link to='javascript:void(0)'
-                      class=' font-medium text-[15px]'>
-
-                      Bottom
-                    </Link>
-                    <ul className="mt-1 text-[12px] ">
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/mens">Pants</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/mens">Jeans</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/mens">Jogger</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/mens">Shorts</Link></li>
-
-                    </ul>
-
-                  </li>
-                  <li class=''>
-                    <Link to=''
-                      class=' font-medium text-[15px]'>
-
-                      Shoes
-                    </Link>
-                    <ul className="mt-1 text-[12px] ">
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/mens">Leather</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/mens">Addidas</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/mens">Nike</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/mens">Puma</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/mens">Sports</Link></li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-              <li class='group max-lg:border-b border-gray-300 max-lg:py-3 px-3 relative'>
-                <Link to='/womens'
-                  class='hover:text-primary  text-[#1F1F1F] block font-medium text-[13px]'>Women
-                </Link>
-                <ul
-                  class='absolute top-5 max-lg:top-8 left-0 lg:left-[-70px] z-50  shadow-lg bg-teal-600 text-white max-h-0 overflow-hidden min-w-[450px] lg:min-w-[650px] group-hover:opacity-100 group-hover:max-h-[700px] px-6 group-hover:pb-4 group-hover:pt-6 transition-all duration-500 flex flex-wrap justify-evenly'>
-                  <li class=''>
-                    <Link to=''
-                      class=' font-medium text-[15px]'>
-
-                      New Arrivals
-                    </Link>
-                    <ul className="mt-1 text-[12px]">
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/womens">Kurta</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/womens">Shirts</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/womens">Pant</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/womens">Trouser</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/womens">Jogger</Link></li>
-                    </ul>
-                  </li>
-                  <li class=''>
-                    <Link to='/womens'
-                      class='  font-medium text-[15px]'>
-
-                      Tops
-                    </Link>
-                    <ul className="mt-1 text-[12px] ">
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/womens">T-shirts</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/womens">Shirts</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/womens">Sweater</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/womens">Hoddie</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/womens">Jackets</Link></li>
-                    </ul>
-
-                  </li>
-                  <li class=''>
-                    <Link to='/womensjavascript:void(0)'
-                      class=' font-medium text-[15px]'>
-
-                      Bottom
-                    </Link>
-                    <ul className="mt-1 text-[12px] ">
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/womens">Pants</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/womens">Jeans</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/womens">Jogger</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/womens">Shorts</Link></li>
-
-                    </ul>
-
-                  </li>
-                  <li class=''>
-                    <Link to=''
-                      class=' font-medium text-[15px]'>
-
-                      Shoes
-                    </Link>
-                    <ul className="mt-1 text-[12px] ">
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/womens">Leather</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/womens">Addidas</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/womens">Nike</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/womens">Puma</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/womens">Sports</Link></li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-              <li class='group max-lg:border-b border-gray-300 max-lg:py-3 px-3 relative'>
-                <Link to='/kids'
-                  class='hover:text-primary  text-[#1F1F1F] block font-medium text-[13px]'>Kids
-                </Link>
-                <ul
-                  class='absolute top-5 max-lg:top-8 left-0 lg:left-[-165px] z-50  shadow-lg bg-teal-600 text-white max-h-0 overflow-hidden min-w-[450px] lg:min-w-[650px]  group-hover:opacity-100 group-hover:max-h-[700px] px-6 group-hover:pb-4 group-hover:pt-6 transition-all duration-500 flex flex-wrap justify-evenly'>
-                  <li class=''>
-                    <Link to=''
-                      class=' font-medium text-[15px]'>
-
-                      New Arrivals
-                    </Link>
-                    <ul className="mt-1 text-[12px]">
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/kids">T-shirts</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/kids">Shirts</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/kids">Pant</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/kids">Trouser</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/kids">Jogger</Link></li>
-                    </ul>
-                  </li>
-                  <li class=''>
-                    <Link to=''
-                      class='  font-medium text-[15px]'>
-
-                      Tops
-                    </Link>
-                    <ul className="mt-1 text-[12px] ">
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/kids">T-shirts</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/kids">Shirts</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/kids">Sweater</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/kids">Hoddie</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/kids">Jackets</Link></li>
-                    </ul>
-
-                  </li>
-                  <li class=''>
-                    <Link to='javascript:void(0)'
-                      class=' font-medium text-[15px]'>
-
-                      Bottom
-                    </Link>
-                    <ul className="mt-1 text-[12px] ">
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/kids">Pants</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/kids">Jeans</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/kids">Jogger</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/kids">Shorts</Link></li>
-
-                    </ul>
-
-                  </li>
-                  <li class=''>
-                    <Link to=''
-                      class=' font-medium text-[15px]'>
-
-                      Shoes
-                    </Link>
-                    <ul className="mt-1 text-[12px] ">
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/kids">Leather</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/kids">Addidas</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/kids">Nike</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/kids">Puma</Link></li>
-                      <li className="py-1 hover:underline hover:cursor-pointer"><Link to="/kids">Sports</Link></li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-              <li className='max-lg:border-b border-gray-300 max-lg:py-3 px-3'><Link to='/sale'
-                className='hover:text-primary text-[#1F1F1F] block font-medium text-[13px]'>Sale</Link>
-              </li>
-              <li className='max-lg:border-b border-gray-300 max-lg:py-3 px-3'><Link to='clearance'
-                className='hover:text-primary text-[#1F1F1F] block font-medium text-[13px]'>Clearance</Link>
-              </li>
-
-            </ul>
+            {/* Actions */}
+            <div className="flex items-center space-x-6">
+              <Link to="/cart" className="relative group">
+                <ShoppingCart className="w-6 h-6 text-gray-700 group-hover:text-blue-600 transition-colors" />
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+              </Link>
+              <Link to="/login" className="group">
+                <User className="w-6 h-6 text-gray-700 group-hover:text-blue-600 transition-colors" />
+              </Link>
+              <button ref={toggleOpenRef} className="lg:hidden focus:outline-none">
+                <Menu className="w-6 h-6 text-gray-700" />
+              </button>
+            </div>
           </div>
+        </header>
+      </div>
 
-          {/* menu for larger screen */}
-          <div className='flex max-lg:ml-auto space-x-2 md:space-x-5 items-center '>
-            <Link to={'/cart'}>
-              <i class="fa-solid fa-cart-shopping text-blue-900 text-2xl"></i>
-            </Link>
-            <Link to={'/login'}
-              className='text-xs text-primary rounded-full transition-all ease-in-out duration-300 hover:text-btn-color'>
-
-              <i class="fa-solid fa-user text-blue-900 text-2xl"></i>
-            </Link>
-            {/* <Link to={'register'}
-              className='text-xs text-primary rounded-full transition-all ease-in-out duration-300 hover:text-btn-color hidden lg:block'>
-              <i class="fa-solid fa-user-plus text-blue-900 text-xl"></i>
-            </Link> */}
-
-
-            <button id="toggleOpen" className='lg:hidden' ref={toggleOpenRef}>
-              <i class="fa-solid fa-bars text-blue-900 text-2xl"></i>
+      {/* Mobile Menu */}
+      <div className="lg:hidden">
+        <div className="fixed inset-0 bg-black/50 z-50 transition-opacity duration-300" style={{ display: "none" }} ref={collapseMenuRef}>
+          <div className="absolute right-0 top-0 h-full w-80 bg-white shadow-xl">
+            <button ref={toggleCloseRef} className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full transition-colors">
+              <X className="w-6 h-6 text-gray-700" />
             </button>
+            <div className="p-6 pt-16">
+              <MobileNavigation />
+            </div>
           </div>
         </div>
-      </header>
-
-    </>
-
+      </div>
+    </div>
   );
 };
+
+const NavLink = ({ to, label }) => (
+  <Link to={to} className="text-md  px-3 font-bold text-gray-700 hover:text-blue-600 transition-colors relative group">
+    {label}
+    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+  </Link>
+);
+
+const NavDropdown = ({ label, items, link }) => (
+  <div className=" group hover:bg-blue-950  pb-5 mt-5 px-3 transition-all duration-200   ">
+    <Link to={link} className="text-md font-bold text-gray-700 group-hover:text-white  transition-colors w-full h-full">
+      {label}
+
+    </Link>
+    <div className="absolute top-full left-0 right-0 lg:w-[70%] mx-auto  px-10   opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 bg-blue-950  rounded-tl-none rounded-tr-none rounded-lg shadow-xl">
+      <div className=" grid grid-cols-4 gap-8 py-10 ">
+        {items.map((category, index) => (
+          <div key={index}>
+            {/* <h3 className="font-medium text-gray-900 mb-3">{category.title}</h3> */}
+            <div className="w-[1/3] border-r-2">
+              <ul className="space-y-2">
+                {category.items.map((item, idx) => (
+                  <li key={idx}>
+                    <Link to={item.link} className="text-sm text-gray-200 hover:text-blue-600 transition-colors">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="items-collection"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+const MobileNavigation = () => (
+  <nav className="space-y-6">
+    <Link to="/" className="block text-lg font-medium text-gray-900 hover:text-blue-600 transition-colors">
+      Home
+    </Link>
+    {/* Add other mobile navigation items */}
+  </nav>
+);
+
+const menItems = [
+  {
+    title: "New Arrivals",
+    items: [
+      { label: "T-shirts", link: "/mens" },
+      { label: "Shirts", link: "/mens" },
+      { label: "Pants", link: "/mens" },
+      { label: "Trousers", link: "/mens" },
+      { label: "Joggers", link: "/mens" },
+    ],
+    link: "/mens",
+  },
+  // Add other categories
+];
+const womenItems = [
+  {
+    title: "New Arrivals",
+    items: [
+      { label: "T-shirts", link: "/mens" },
+      { label: "Shirts", link: "/mens" },
+      { label: "Pants", link: "/mens" },
+      { label: "Trousers", link: "/mens" },
+      { label: "Joggers", link: "/mens" },
+    ],
+    link: "/women",
+  },
+  // Add other categories
+];
+
+const kidsItems = [
+  {
+    title: "New Arrivals",
+    items: [
+      { label: "T-shirts", link: "/mens" },
+      { label: "Shirts", link: "/mens" },
+      { label: "Pants", link: "/mens" },
+      { label: "Trousers", link: "/mens" },
+      { label: "Joggers", link: "/mens" },
+    ],
+    link: "/kids",
+  },
+  // Add other categories
+];
+
+// Define womenItems and kidsItems similarly
 
 export default Header;

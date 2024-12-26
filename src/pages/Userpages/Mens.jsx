@@ -1,157 +1,156 @@
-import React,{useState, useEffect} from 'react'
-import ProductCard from '../../components/UserDashboard/ProductCard'
-import { Link } from "react-router-dom";
-import axios from 'axios';
+import React, { useState } from "react";
+import ProductCard from "../../components/UserDashboard/ProductCard";
+
+const products = [
+  {
+    productImg: "https://readymadeui.com/images/product2.webp",
+    productName: "Adjective Attire | T-shirt",
+    price: 1200,
+  },
+  {
+    productImg: "https://readymadeui.com/images/product1.webp",
+    productName: "Lexicon Luxe | T-shirt",
+    price: 2500,
+  },
+  {
+    productImg: "https://readymadeui.com/images/product3.webp",
+    productName: "Lexicon Luxe | T-shirt",
+    price: 2500,
+  },
+  {
+    productImg: "https://readymadeui.com/images/product6.webp",
+    productName: "Lexicon Luxe | T-shirt",
+    price: 2500,
+  },
+  {
+    productImg: "https://readymadeui.com/images/product1.webp",
+    productName: "Lexicon Luxe | T-shirt",
+    price: 2500,
+  },
+  {
+    productImg: "https://readymadeui.com/images/product7.webp",
+    productName: "Lexicon Luxe | T-shirt",
+    price: 2500,
+  },
+  {
+    productImg: "https://readymadeui.com/images/product6.webp",
+    productName: "Lexicon Luxe | T-shirt",
+    price: 2500,
+  },
+  {
+    productImg: "https://readymadeui.com/images/product1.webp",
+    productName: "Lexicon Luxe | T-shirt",
+    price: 2500,
+  },
+  {
+    productImg: "https://readymadeui.com/images/product7.webp",
+    productName: "Lexicon Luxe | T-shirt",
+    price: 2500,
+  },
+  {
+    productImg: "https://readymadeui.com/images/product6.webp",
+    productName: "Lexicon Luxe | T-shirt",
+    price: 2500,
+  },
+  {
+    productImg: "https://readymadeui.com/images/product1.webp",
+    productName: "Lexicon Luxe | T-shirt",
+    price: 2500,
+  },
+  {
+    productImg: "https://readymadeui.com/images/product7.webp",
+    productName: "Lexicon Luxe | T-shirt",
+    price: 2500,
+  },
+  {
+    productImg: "https://readymadeui.com/images/product6.webp",
+    productName: "Lexicon Luxe | T-shirt",
+    price: 2500,
+  },
+  {
+    productImg: "https://readymadeui.com/images/product1.webp",
+    productName: "Lexicon Luxe | T-shirt",
+    price: 2500,
+  },
+  {
+    productImg: "https://readymadeui.com/images/product7.webp",
+    productName: "Lexicon Luxe | T-shirt",
+    price: 2500,
+  },
+];
 
 const Mens = () => {
-  const [data, SetData] = useState([]);
-  useEffect(()=>{
-      const fetchdata = async()=>{
-          try{
-          let res =  await fetch('http://127.0.0.1:8000/product/')
-          let datas = await res.json();
-          console.log(datas)
-          SetData(datas)
-          }catch(e){
-              console.log(e.message)
-          }
-      }
-      fetchdata()
-  },[])
+  const [sortOption, setSortOption] = useState("name");
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 10;
+
+  const sortedProducts = [...products].sort((a, b) => {
+    if (sortOption === "priceAsc") {
+      return a.price - b.price;
+    } else if (sortOption === "priceDesc") {
+      return b.price - a.price;
+    } else {
+      return a.productName.localeCompare(b.productName);
+    }
+  });
+
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = sortedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const totalPages = Math.ceil(sortedProducts.length / productsPerPage);
+
   return (
     <>
-    <div className="font-poppins p-4 mx-auto lg:max-w-6xl md:max-w-3xl sm:max-w-full ">
-      <h2 className="text-4xl font-extrabold text-gray-800 mb-12">Mens Collection</h2>
+      <div className="py-4 mx-auto w-full lg:w-[90%]  md:w-[95%] sm:w-[95%] font-poppins">
+        <h2 className="Playfair_font text-3xl font-bold text-gray-800 mb-1">Mens Collection</h2>
 
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 md:grid-cols-3 gap-6">
-        {/* <ProductCard/>
-        <ProductCard/>
-        <ProductCard/>
-        <ProductCard/> */}
-        { data.map(items=>(
-            <div className="bg-white rounded overflow-hidden shadow-md cursor-pointer hover:scale-[1.02] transition-all" key={items.id}>
-            <div className="w-full aspect-w-16 aspect-h-8 lg:h-80">
-              <img src="https://readymadeui.com/images/product2.webp" alt="Product 2"
-                className="h-full w-full object-cover object-top" />
-            </div>
-  
-            <div className="p-4">
-              <h3 className="text-sm lg:text-lg  font-bold text-gray-800">{items.title}</h3>
-              <div className="mt-4 flex items-center flex-wrap gap-2">
-                <h4 className="text-lg font-bold text-gray-800">Rs. {items.price}</h4>
-  
-                <div className="bg-gray-100 w-10 h-10 flex items-center justify-center rounded-full cursor-pointer ml-auto">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16px" className="fill-gray-800 inline-block"
-                    viewBox="0 0 64 64">
-                    <path
-                      d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
-                      data-original="#000000"></path>
-                  </svg>
+        <div className="flex justify-between items-center  ">
+          <div>
+            <p>Showing 1–16 of 328 results</p>
+          </div>
+
+          <div className="flex justify-between items-center mb-6">
+            <select className="border p-2 rounded" value={sortOption} onChange={(e) => setSortOption(e.target.value)}>
+              <option value="name">Sort by Name</option>
+              <option value="priceAsc">Price: Low to High</option>
+              <option value="priceDesc">Price: High to Low</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 md:grid-cols-3 gap-6">
+          {currentProducts.map((item, index) => (
+            <div className="group bg-white rounded shadow-md cursor-pointer" key={index}>
+              <div to="/productDetail" className="overflow-hidden w-full aspect-w-16 aspect-h-8">
+                <img src={item.productImg} alt="Product 1" className="h-80 w-full object-cover object-top group-hover:scale-[1.02] transition-all duration-500" />
+              </div>
+
+              <div className="p-4">
+                <h3 className="text-lg text-gray-800 font-normal text-center Playfair_font">
+                  {indexOfFirstProduct + index + 1}. {item.productName}
+                </h3>
+                <div className="mt-1 flex items-center flex-wrap gap-2 justify-center">
+                  <h4 className="text-md text-gray-800 text-center">
+                    Rs. <span className="font-semibold">{item.price}</span>
+                  </h4>
                 </div>
               </div>
             </div>
-          </div>
-
-          ))
-        }
-
-       
-
-        {/* <div className="bg-white rounded overflow-hidden shadow-md cursor-pointer hover:scale-[1.02] transition-all">
-          <div className="w-full aspect-w-16 aspect-h-8 lg:h-80">
-            <img src="https://readymadeui.com/images/product3.webp" alt="Product 3"
-              className="h-full w-full object-cover object-top" />
-          </div>
-
-          <div className="p-4">
-            <h3 className="text-lg font-bold text-gray-800">ThreadCraft Vibes | T-shirt</h3>
-            <div className="mt-4 flex items-center flex-wrap gap-2">
-              <h4 className="text-lg font-bold text-gray-800">$14</h4>
-
-              <div className="bg-gray-100 w-10 h-10 flex items-center justify-center rounded-full cursor-pointer ml-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16px" className="fill-gray-800 inline-block"
-                  viewBox="0 0 64 64">
-                  <path
-                    d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
-                    data-original="#000000"></path>
-                </svg>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
 
-        <div className="bg-white rounded overflow-hidden shadow-md cursor-pointer hover:scale-[1.02] transition-all">
-          <div className="w-full aspect-w-16 aspect-h-8 lg:h-80">
-            <img src="https://readymadeui.com/images/product7.webp" alt="Product 3"
-              className="h-full w-full object-cover object-top" />
-          </div>
-
-          <div className="p-4">
-            <h3 className="text-lg font-bold text-gray-800">Verbal Vogue Tees | T-shirt</h3>
-            <div className="mt-4 flex items-center flex-wrap gap-2">
-              <h4 className="text-lg font-bold text-gray-800">$12</h4>
-
-              <div className="bg-gray-100 w-10 h-10 flex items-center justify-center rounded-full cursor-pointer ml-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16px" className="fill-gray-800 inline-block"
-                  viewBox="0 0 64 64">
-                  <path
-                    d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
-                    data-original="#000000"></path>
-                </svg>
-              </div>
-            </div>
-          </div>
+        <div className="flex justify-center mt-8 space-x-1">
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button key={i} onClick={() => paginate(i + 1)} className={`px-4 py-1 border rounded ${currentPage === i + 1 ? "bg-gray-800 text-white" : "bg-white"}`}>
+              {i + 1}
+            </button>
+          ))}
         </div>
-
-        <div className="bg-white rounded overflow-hidden shadow-md cursor-pointer hover:scale-[1.02] transition-all">
-          <div className="w-full aspect-w-16 aspect-h-8 lg:h-80">
-            <img src="https://readymadeui.com/images/product5.webp" alt="Product 3"
-              className="h-full w-full object-cover object-top" />
-          </div>
-
-          <div className="p-4">
-            <h3 className="text-lg font-bold text-gray-800">Jargon Jungle | T-shirt</h3>
-            <div className="mt-4 flex items-center flex-wrap gap-2">
-              <h4 className="text-lg font-bold text-gray-800">$15</h4>
-
-              <div className="bg-gray-100 w-10 h-10 flex items-center justify-center rounded-full cursor-pointer ml-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16px" className="fill-gray-800 inline-block"
-                  viewBox="0 0 64 64">
-                  <path
-                    d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
-                    data-original="#000000"></path>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded overflow-hidden shadow-md cursor-pointer hover:scale-[1.02] transition-all">
-          <div className="w-full aspect-w-16 aspect-h-8 lg:h-80">
-            <img src="https://readymadeui.com/images/product6.webp" alt="Product 3"
-              className="h-full w-full object-cover object-top" />
-          </div>
-
-          <div className="p-4">
-            <h3 className="text-lg font-bold text-gray-800">Syllable Streetwear | T-shirt</h3>
-            <div className="mt-4 flex items-center flex-wrap gap-2">
-              <h4 className="text-lg font-bold text-gray-800">$14</h4>
-
-              <div className="bg-gray-100 w-10 h-10 flex items-center justify-center rounded-full cursor-pointer ml-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16px" className="fill-gray-800 inline-block"
-                  viewBox="0 0 64 64">
-                  <path
-                    d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
-                    data-original="#000000"></path>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div> */}
       </div>
-    </div>
     </>
-  )
-}
+  );
+};
 
-export default Mens
+export default Mens;
