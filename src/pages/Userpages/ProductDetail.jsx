@@ -3,6 +3,7 @@ import ProductCard from "../../components/UserDashboard/ProductCard";
 import "../../style.css";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { Heading } from "./HomePage";
+import { useState } from "react";
 
 const products = [
   {
@@ -37,24 +38,27 @@ const products = [
   },
 ];
 const ProductDetail = () => {
+  const [selectedImage, setSelectedImage] = useState("https://readymadeui.com/images/product6.webp");
+
+  const images = ["https://readymadeui.com/images/product6.webp", "https://readymadeui.com/images/product8.webp", "https://readymadeui.com/images/product5.webp", "https://readymadeui.com/images/product7.webp"];
   return (
     <>
       <div className=" p-4 mx-auto lg:w-[90%] md:w-[95%] sm:w-[95%] max-w-7xl  max-lg:mx-auto font-poppins mt-4">
-        <div className="grid items-start grid-cols-1 lg:grid-cols-2 md:grid-cols-2 gap-8 max-lg:gap-16">
-          <div className="w-full lg:sticky top-0 text-center lg:block sm:flex sm:gap-2">
-            <div className="lg:h-[560px] sm:h-[400px] h-[350px]">
-              <img src="https://readymadeui.com/images/product6.webp" alt="Product" className="lg:w-11/12 w-full h-full rounded-md object-cover object-top" />
+        <div className="grid items-start grid-cols-1 lg:grid-cols-5 md:grid-cols-2 gap-8 max-lg:gap-16">
+          <div className="lg:col-span-2 w-full lg:sticky top-0 text-center lg:block sm:flex sm:gap-2">
+            <div className="lg:h-[400px] sm:h-[400px] h-[350px]">
+              <img src={selectedImage} alt="Selected Product" className="lg:w-10/12 w-full h-full rounded-md  " />
             </div>
 
-            <div className="flex flex-wrap gap-4 justify-center mx-auto mt-4 sm:flex-col lg:flex-row">
-              <img src="https://readymadeui.com/images/product6.webp" alt="Product1" className="w-16 md:w-14 cursor-pointer rounded-md outline" />
-              <img src="https://readymadeui.com/images/product8.webp" alt="Product2" className="w-16 md:w-14 cursor-pointer rounded-md" />
-              <img src="https://readymadeui.com/images/product5.webp" alt="Product3" className="w-16 md:w-14 cursor-pointer rounded-md" />
-              <img src="https://readymadeui.com/images/product7.webp" alt="Product4" className="w-16 md:w-14 cursor-pointer rounded-md" />
+            {/* Thumbnails */}
+            <div className="flex flex-wrap gap-4 justify-start mx-auto mt-4 sm:flex-col lg:flex-row">
+              {images.map((img, index) => (
+                <img key={index} src={img} alt={`Product ${index + 1}`} onClick={() => setSelectedImage(img)} className={`w-16 md:w-14 cursor-pointer rounded-md ${selectedImage === img ? "outline outline-2 outline-primary" : ""}`} />
+              ))}
             </div>
           </div>
 
-          <div>
+          <div className="lg:col-span-3">
             <div className="flex flex-wrap items-start gap-4">
               <div>
                 <h2 className="text-2xl font-bold text-gray-800">Adjective Attire | T-shirt</h2>
