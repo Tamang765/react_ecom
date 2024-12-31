@@ -12,7 +12,9 @@ const ProductCard = () => {
           </div>
 
         <div className="p-4 ">
-          <h3 className="text-lg text-gray-800 font-normal text-center Playfair_font">Lexicon Luxe | T-shirt</h3>
+         <Link to={"/productDetail"}>
+         <h3 className="text-lg text-gray-800 font-normal text-center Playfair_font">Lexicon Luxe | T-shirt</h3>
+         </Link> 
           <div className="mt-1 flex items-center flex-wrap gap-2 justify-center ">
             <h4 className="text-md text-gray-800 text-center ">
               Rs. <span className="font-semibold">1000</span>{" "}

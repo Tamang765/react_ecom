@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ProductCard from "../../components/UserDashboard/ProductCard";
+import { Link } from "react-router-dom";
 
 const products = [
   {
@@ -103,7 +104,7 @@ const Womens = () => {
 
   return (
     <>
-      <div className="py-4 mx-auto w-full lg:w-[90%]  md:w-[95%] sm:w-[95%] font-poppins">
+      <div className="py-4 mx-auto w-full lg:w-[90%]  md:w-[95%] sm:w-[95%] font-poppins max-w-7xl">
         <h2 className="Playfair_font text-3xl font-bold text-gray-800 mb-1">Womens Collection</h2>
 
         <div className="flex justify-between items-center  ">
@@ -120,17 +121,19 @@ const Womens = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 md:grid-cols-3 gap-6 ">
           {currentProducts.map((item, index) => (
             <div className="group bg-white rounded shadow-md cursor-pointer" key={index}>
               <div to="/productDetail" className="overflow-hidden w-full aspect-w-16 aspect-h-8">
-                <img src={item.productImg} alt="Product 1" className="h-80 w-full object-cover object-top group-hover:scale-[1.02] transition-all duration-500" />
+                <img src={item.productImg} alt="Product 1" className="h-80 w-full object-cover object-top group-hover:scale-105 transition-all duration-500" />
               </div>
 
               <div className="p-4">
-                <h3 className="text-lg text-gray-800 font-normal text-center Playfair_font">
-                  {indexOfFirstProduct + index + 1}. {item.productName}
-                </h3>
+                <Link to={"/productDetail"}>
+                  <h3 className="text-lg text-gray-800 font-normal text-center Playfair_font">
+                    {indexOfFirstProduct + index + 1}. {item.productName}
+                  </h3>
+                </Link>
                 <div className="mt-1 flex items-center flex-wrap gap-2 justify-center">
                   <h4 className="text-md text-gray-800 text-center">
                     Rs. <span className="font-semibold">{item.price}</span>

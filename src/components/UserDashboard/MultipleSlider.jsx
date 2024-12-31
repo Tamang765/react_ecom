@@ -58,16 +58,18 @@ function MultipleItems({ items }) {
     <div className="slider-container">
       <Slider {...settings}>
         {items?.map((item, index) => (
-          <div className="bg-white rounded   cursor-pointer  transition-all px-2 " key={index}>
+          <div className="bg-white rounded   cursor-pointer  transition-all px-2 group " key={index}>
             <div className="shadow-md border overflow-hidden">
-              <div className="w-full aspect-w-16 aspect-h-8 lg:h-80">
+              <div className="w-full aspect-w-16 aspect-h-8 lg:h-80 overflow-hidden">
                 <Link to={"/productDetail"}>
-                  <img src={item.productImg} alt="Product 1" className="h-full w-full object-cover object-top" />
+                  <img src={item.productImg} alt="Product 1" className="h-full w-full  object-cover object-top group-hover:scale-105 transition-all duration-500" />
                 </Link>
               </div>
 
               <div className="p-4">
+                <Link to={"/productDetail"}>
                 <h3 className="text-lg text-gray-800 text-center Playfair_font">{item?.productName}</h3>
+                </Link>
                 <div className="mt-4 flex items-center flex-wrap gap-2 justify-center">
                   <h4 className="text-md text-gray-800 text-center">
                     Rs. <span className="font-semibold">{item?.price}</span>{" "}
