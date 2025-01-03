@@ -60,7 +60,7 @@ function MultipleItems({ items }) {
         {items?.map((item, index) => (
           <div className="bg-white rounded   cursor-pointer  transition-all px-2 group " key={index}>
             <div className="shadow-md border overflow-hidden">
-              <div className="w-full aspect-w-16 aspect-h-8 lg:h-80 overflow-hidden">
+              <div className="w-full aspect-w-16 aspect-h-8 lg:h-100 overflow-hidden">
                 <Link to={"/productDetail"}>
                   <img src={item.productImg} alt="Product 1" className="h-full w-full  object-cover object-top group-hover:scale-105 transition-all duration-500" />
                 </Link>

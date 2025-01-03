@@ -1,91 +1,15 @@
 import React, { useState } from "react";
 import ProductCard from "../../components/UserDashboard/ProductCard";
 import { Link } from "react-router-dom";
+import { Products } from "./HomePage";
 
-const products = [
-  {
-    productImg: "https://readymadeui.com/images/product2.webp",
-    productName: "Adjective Attire | T-shirt",
-    price: 1200,
-  },
-  {
-    productImg: "https://readymadeui.com/images/product1.webp",
-    productName: "Lexicon Luxe | T-shirt",
-    price: 2500,
-  },
-  {
-    productImg: "https://readymadeui.com/images/product3.webp",
-    productName: "Lexicon Luxe | T-shirt",
-    price: 2500,
-  },
-  {
-    productImg: "https://readymadeui.com/images/product6.webp",
-    productName: "Lexicon Luxe | T-shirt",
-    price: 2500,
-  },
-  {
-    productImg: "https://readymadeui.com/images/product1.webp",
-    productName: "Lexicon Luxe | T-shirt",
-    price: 2500,
-  },
-  {
-    productImg: "https://readymadeui.com/images/product7.webp",
-    productName: "Lexicon Luxe | T-shirt",
-    price: 2500,
-  },
-  {
-    productImg: "https://readymadeui.com/images/product6.webp",
-    productName: "Lexicon Luxe | T-shirt",
-    price: 2500,
-  },
-  {
-    productImg: "https://readymadeui.com/images/product1.webp",
-    productName: "Lexicon Luxe | T-shirt",
-    price: 2500,
-  },
-  {
-    productImg: "https://readymadeui.com/images/product7.webp",
-    productName: "Lexicon Luxe | T-shirt",
-    price: 2500,
-  },
-  {
-    productImg: "https://readymadeui.com/images/product6.webp",
-    productName: "Lexicon Luxe | T-shirt",
-    price: 2500,
-  },
-  {
-    productImg: "https://readymadeui.com/images/product1.webp",
-    productName: "Lexicon Luxe | T-shirt",
-    price: 2500,
-  },
-  {
-    productImg: "https://readymadeui.com/images/product7.webp",
-    productName: "Lexicon Luxe | T-shirt",
-    price: 2500,
-  },
-  {
-    productImg: "https://readymadeui.com/images/product6.webp",
-    productName: "Lexicon Luxe | T-shirt",
-    price: 2500,
-  },
-  {
-    productImg: "https://readymadeui.com/images/product1.webp",
-    productName: "Lexicon Luxe | T-shirt",
-    price: 2500,
-  },
-  {
-    productImg: "https://readymadeui.com/images/product7.webp",
-    productName: "Lexicon Luxe | T-shirt",
-    price: 2500,
-  },
-];
 
 const Kids = () => {
   const [sortOption, setSortOption] = useState("name");
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 10;
 
-  const sortedProducts = [...products].sort((a, b) => {
+  const sortedProducts = [...Products].sort((a, b) => {
     if (sortOption === "priceAsc") {
       return a.price - b.price;
     } else if (sortOption === "priceDesc") {
@@ -104,7 +28,7 @@ const Kids = () => {
 
   return (
     <>
-      <div className="py-4 mx-auto w-full lg:w-[90%]  md:w-[95%] sm:w-[95%] font-poppins max-w-7xl">
+      <div className="py-4 mx-auto  w-[95%] lg:w-[90%]  md:w-[95%] sm:w-[95%] font-poppins max-w-7xl">
         <h2 className="Playfair_font text-3xl font-bold text-gray-800 mb-1">Kids Collection</h2>
 
         <div className="flex justify-between items-center  ">

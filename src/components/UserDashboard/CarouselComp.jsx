@@ -33,48 +33,48 @@ function CarouselComp() {
   };
 
   return (
-    <div className="relative h-[50vh] sm:h-[40vh] md:h-[60vh] lg:h-[70vh] ">
-      <Slider {...settings} className="h-[50vh] lg:h-[70vh] md:h-[60vh] sm:h-[40vh] ">
-        <div className="bg-gray-200 h-[50vh]  lg:h-[70vh] md:h-[60vh] sm:h-[40vh] ">
+    <div className="relative h-[50vh] sm:h-[40vh] md:h-[50vh] lg:h-[60vh] ">
+      <Slider {...settings} className="h-[50vh] lg:h-[60vh] md:h-[50vh] sm:h-[40vh] ">
+        <div className="bg-gray-200 h-[50vh]  lg:h-[60vh] md:h-[50vh] sm:h-[40vh] ">
           <div className="grid grid-cols-2 items-center h-full">
             <div className="w-full h-full">
               <img src="/img/cover.png" alt="..." className="w-full h-full object-cover" />
             </div>
             <div className="p-8">
-              <h2 className="text-5xl font-bold capitalize Playfair_font text-center">Welcome to Our Service</h2>
+              <h2 className="lg:text-5xl md:text-4xl text-3xl  font-bold capitalize Playfair_font text-center text-blue-950">Welcome to Our Service</h2>
               <p className="mt-4 text-lg text-gray-600 carousel_font italic text-center">Explore our features and offerings in detail.</p>
             </div>
           </div>
         </div>
-        <div className="bg-gray-200 h-[50vh] md:h-[60vh] sm:h-[40vh] lg:h-[70vh] ">
+        <div className="bg-gray-200 h-[50vh] md:h-[50vh] sm:h-[40vh] lg:h-[60vh] ">
           <div className="grid grid-cols-2 items-center h-full  ">
             <div className="w-full h-full">
-              <img src="/img/download.png" alt="..." className="w-full lg:h-[70vh] h-full object-cover " />
+              <img src="/img/download.png" alt="..." className="w-full lg:h-[60vh] h-full object-cover " />
             </div>
             <div className="p-8">
-              <h2 className="text-5xl font-bold capitalize  Playfair_font text-center">Innovative Solutions</h2>
+              <h2 className="lg:text-5xl md:text-4xl text-3xl font-bold capitalize  Playfair_font text-center ">Innovative Solutions</h2>
               <p className="mt-4 text-lg text-gray-600 carousel_font text-center">Discover how we can help streamline your workflow.</p>
             </div>
           </div>
         </div>
-        <div className="bg-gray-200 h-[50vh] lg:h-[70vh] md:h-[60vh] sm:h-[40vh] ">
+        <div className="bg-gray-200 h-[50vh] lg:h-[60vh] md:h-[50vh] sm:h-[40vh] ">
           <div className="grid grid-cols-2 items-center h-full ">
             <div className="w-full h-full">
               <img src="/img/cover.png" alt="..." className="w-full h-full object-cover bg-center bg-cover" />
             </div>
             <div className="p-8">
-              <h2 className="text-5xl font-bold capitalize  Playfair_font text-center">Innovative Solutions</h2>
+              <h2 className="lg:text-5xl md:text-4xl text-3xl  font-bold capitalize  Playfair_font text-center">Innovative Solutions</h2>
               <p className="mt-4 text-lg text-gray-600 carousel_font text-center italic">Discover how we can help streamline your workflow.</p>
             </div>
           </div>
         </div>
-        <div className="bg-gray-200 h-[50vh] lg:h-[70vh] md:h-[60vh] sm:h-[40vh]">
+        <div className="bg-gray-200 h-[50vh] lg:h-[60vh] md:h-[50vh] sm:h-[40vh]">
           <div className="grid grid-cols-2 items-center h-full ">
             <div className="w-full h-full">
-              <img src="/img/logo.jpg" alt="..." className="w-full h-full lg:h-[70vh] object-cover bg-center bg-cover" />
+              <img src="/img/logo.jpg" alt="..." className="w-full h-full lg:h-[60vh] object-cover bg-center bg-cover" />
             </div>
             <div className="p-8">
-              <h2 className="text-5xl font-bold capitalize  Playfair_font text-center">Innovative Solutions</h2>
+              <h2 className="lg:text-5xl md:text-4xl text-3xl  font-bold capitalize  Playfair_font text-center">Innovative Solutions</h2>
               <p className="mt-4 text-lg text-gray-600 carousel_font text-center italic">Discover how we can help streamline your workflow.</p>
             </div>
           </div>

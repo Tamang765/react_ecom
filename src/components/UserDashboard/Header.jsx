@@ -1,7 +1,9 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ShoppingCart, User, Menu, X, MapPin, Phone, ChevronDown, ArrowRight } from "lucide-react";
+import { ShoppingCart, User, Menu, X, MapPin, Phone, ChevronDown, ArrowRight, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Products, SubCategories } from "../../pages/Userpages/HomePage";
+import { h2 } from "framer-motion/client";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,7 +35,7 @@ const Header = () => {
       {/* Main Header */}
       <div className="sticky top-0 z-50">
         <header className="bg-white/95 backdrop-blur-md shadow-md transition-all duration-300">
-          <div className="w-[95%] lg:w-[95%] md:w-[90%] sm:w-[95%] mx-auto flex items-center justify-between max-w-7xl lg:py-0 md:py-3 sm:py-3 py-2">
+          <div className="w-[95%] lg:w-[95%] md:w-[90%] sm:w-[95%] mx-auto flex items-center justify-between max-w-7xl lg:py-2 md:py-3 sm:py-3 py-2 ">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-3 group">
               <div className="relative">
@@ -47,13 +49,10 @@ const Header = () => {
             <div id="collapseMenu" className="hidden lg:block">
               <nav className="flex items-center space-x-0">
                 <NavLink to="/" label="Home" />
-                <NavDropdown label="Men" link="/mens" items={menItems} />
-                <NavDropdown label="Women" link="/womens" items={womenItems} />
-                <NavDropdown label="Kids" link="/kids" items={kidsItems} />
-                <NavDropdown label="Camps & Tents" link="/camps-and-tents" items={[]} />
-                <NavDropdown label="Packs & Bags" link="/packs-and-bags" items={[]} />
-                <NavLink to="/sale" label="Sale" />
-                {/* <NavLink to="/clearance" label="Clearance" /> */}
+                <NavDropdown label="men" link="/mens" items={menItems} products={Products.filter((product) => product.category === "men")} />
+                <NavDropdown label="women" link="/womens" items={womenItems} products={Products.filter((product) => product.category === "women")} />
+                <NavDropdown label="kids" link="/kids" items={kidsItems} products={Products.filter((product) => product.category === "kids")} />
+                {/* <NavLink to="/sale" label="Sale" /> */}
               </nav>
             </div>
 
@@ -93,67 +92,125 @@ const Header = () => {
   );
 };
 
-const NavLink = ({ to, label, setIsOpen }) => (
-  <Link to={to} className="text-md md:text-lg lg:text-md px-4  font-bold text-gray-700 hover:text-blue-600 transition-colors relative group flex items-center gap-3" onClick={(e) => setIsOpen(false)}>
-    <i className=" lg:hidden flex ">
-      <ArrowRight className="ml-2" size={18} />
-    </i>
+const NavLink = ({ to, label }) => (
+  <Link to={to} className="text-md lg:text-sm uppercase px-4 font-semibold text-black hover:text-blue-600 transition-colors relative group flex items-center gap-3">
     {label}
     <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
   </Link>
 );
 
-const NavDropdown = ({ label, items, link }) => (
-  <div className="group hover:bg-blue-950 pb-5 mt-5 px-2 transition-all duration-200">
-    <Link to={link} className="text-md lg:text-md font-bold text-gray-700 group-hover:text-white transition-colors w-full h-full">
-      {label}
-      <ChevronDown className="w-4 h-4 inline ml-2" />
-    </Link>
-    <div className="absolute top-full left-0 right-0 lg:w-[70%] mx-auto px-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 bg-blue-950 rounded-tl-none rounded-tr-none rounded-lg shadow-xl">
-      <div className="grid grid-cols-4 gap-8 py-10">
-        {items.map((category, index) => (
-          <div key={index}>
-            <div className="w-[1/3] border-r-2">
-              <ul className="space-y-2">
-                {category.items.map((item, idx) => (
-                  <li key={idx}>
-                    <Link to={item.link} className="text-sm text-gray-200 hover:text-blue-600 transition-colors">
+const NavDropdown = ({ label, items, link, products }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [categoryProducts, setCategoryProducts] = useState(products.filter((product) => product.subCategory.toLowerCase() === SubCategories[0].name.toLowerCase()));
+  const handleSubCategoryClick = (e, category) => {
+    console.log(category, "this is category");
+    setCategoryProducts(products.filter((product) => product.subCategory.toLowerCase() === category.toLowerCase()));
+  };
+
+  return (
+    <div className=" group" onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>
+      <Link to={link} className="flex items-center px-4 py-2 text-sm font-semibold uppercase text-gray-800 hover:text-blue-600 transition-colors duration-200">
+        {label}
+        <ChevronDown className={`w-4 h-4 ml-1 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+      </Link>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} transition={{ duration: 0.2 }} className="absolute top-full left-0 right-0 w-screen bg-white shadow-lg rounded-b-lg overflow-hidden z-50">
+            <div className="max-w-7xl mx-auto px-8 py-6">
+              <div className="grid grid-cols-5 gap-8">
+                <div className="col-span-1 border-r border-gray-200">
+                  <h3 className="text-lg font-bold text-gray-800 mb-4">{label}</h3>
+                  <ul className="space-y-2">
+                    {SubCategories.map((item, idx) => (
+                      <li key={idx} onClick={(e) => handleSubCategoryClick(e, item.name)}>
+                        <span className="text-sm capitalize text-gray-600 hover:text-blue-600 transition-colors cursor-pointer">{item.name}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="col-span-4 grid grid-cols-4 gap-6">
+                  {categoryProducts
+                    // .filter((product) => product.category.toLowerCase() === label.toLowerCase())
+                    .slice(0, 4)
+                    .map((product, index) => (
+                      <Link to={"/productDetail"} key={index}>
+                        <div  className="group">
+                          <div className="aspect-w-1 aspect-h-1 rounded-lg overflow-hidden bg-gray-100 mb-4">
+                            <img src={product.productImg} alt={product.productName} className="object-cover object-center w-full h-full group-hover:scale-105 transition-transform duration-200" />
+                          </div>
+                          <h4 className="text-sm font-medium text-gray-900 mb-1">{product.productName}</h4>
+                          <p className="text-sm font-medium text-gray-500">${product.price.toFixed(2)}</p>
+                        </div>
+                      </Link>
+                    ))}
+                  {categoryProducts.length === 0 && <h2>No products of this category</h2>}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+const MobileNavigation = ({ setIsOpen }) => (
+  <nav className="flex flex-col gap-4">
+    <MobileNavLink to="/" label="Home" setIsOpen={setIsOpen} />
+    <MobileNavDropdown label="men" items={menItems} setIsOpen={setIsOpen} />
+    <MobileNavDropdown label="Women" items={womenItems} setIsOpen={setIsOpen} />
+    <MobileNavDropdown label="Kids" items={kidsItems} setIsOpen={setIsOpen} />
+    {/* <MobileNavLink to="/sale" label="Sale" setIsOpen={setIsOpen} /> */}
+    {/* <MobileNavLink to="/clearance" label="Clearance" setIsOpen={setIsOpen} /> */}
+  </nav>
+);
+
+const MobileNavLink = ({ to, label, setIsOpen }) => (
+  <Link to={to} className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center justify-between" onClick={() => setIsOpen(false)}>
+    {label}
+    <ArrowRight className="w-5 h-5" />
+  </Link>
+);
+
+const MobileNavDropdown = ({ label, items, setIsOpen }) => {
+  const [isOpen, setIsDropdownOpen] = useState(false);
+
+  return (
+    <div>
+      <button className="w-full text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center justify-between py-2" onClick={() => setIsDropdownOpen(!isOpen)}>
+        {label}
+        <ChevronRight className={`w-5 h-5 transition-transform duration-300 ${isOpen ? "rotate-90" : ""}`} />
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden bg-gray-50 rounded-md mt-2">
+            <ul className="py-2 px-4 space-y-2">
+              {items.flatMap((category) =>
+                category.items.map((item, idx) => (
+                  <li key={idx} className="list-disc pl-2">
+                    <Link to={item.link} className="text-base font-semibold text-gray-600 hover:text-blue-600 transition-colors block py-1" onClick={() => setIsOpen(false)}>
                       {item.label}
                     </Link>
                   </li>
-                ))}
-              </ul>
-            </div>
-            <div className="items-collection"></div>
-          </div>
-        ))}
-      </div>
+                ))
+              )}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
-  </div>
-);
-
-const MobileNavigation = ({ setIsOpen }) => (
-  <nav className=" flex flex-col gap-8">
-    <NavLink to="/" label="Home" setIsOpen={setIsOpen} />
-    <NavLink to="/mens" label="Men" setIsOpen={setIsOpen} />
-    <NavLink to="/womens" label="Women" setIsOpen={setIsOpen} />
-    <NavLink to="/kids" label="Kids" setIsOpen={setIsOpen} />
-    <NavLink to="/camps-and-tents" label="Camps & Tents" setIsOpen={setIsOpen} />
-    <NavLink to="/packs-and-bags" label="Packs & Bags" setIsOpen={setIsOpen} />
-    <NavLink to="/sale" label="Sale" setIsOpen={setIsOpen} />
-    <NavLink to="/clearance" label="Clearance" setIsOpen={setIsOpen} />
-  </nav>
-);
+  );
+};
 
 const menItems = [
   {
     title: "New Arrivals",
     items: [
-      { label: "T-shirts", link: "/mens/t-shirts" },
-      { label: "Shirts", link: "/mens/shirts" },
-      { label: "Pants", link: "/mens/pants" },
-      { label: "Trousers", link: "/mens/trousers" },
-      { label: "Joggers", link: "/mens/joggers" },
+      { label: "Tops", link: "/mens" },
+      { label: "Bottoms", link: "/mens" },
+      { label: "Outerwears", link: "/mens" },
+      { label: "Innerwears", link: "/mens" },
+      { label: "Accessories", link: "/mens" },
     ],
   },
   // Add other categories
@@ -163,11 +220,11 @@ const womenItems = [
   {
     title: "New Arrivals",
     items: [
-      { label: "T-shirts", link: "/womens/t-shirts" },
-      { label: "Shirts", link: "/womens/shirts" },
-      { label: "Pants", link: "/womens/pants" },
-      { label: "Trousers", link: "/womens/trousers" },
-      { label: "Joggers", link: "/womens/joggers" },
+      { label: "T-shirts", link: "/womens" },
+      { label: "Shirts", link: "/womens" },
+      { label: "Pants", link: "/womens" },
+      { label: "Trousers", link: "/womens" },
+      { label: "Joggers", link: "/womens" },
     ],
   },
   // Add other categories
@@ -177,11 +234,11 @@ const kidsItems = [
   {
     title: "New Arrivals",
     items: [
-      { label: "T-shirts", link: "/kids/t-shirts" },
-      { label: "Shirts", link: "/kids/shirts" },
-      { label: "Pants", link: "/kids/pants" },
-      { label: "Trousers", link: "/kids/trousers" },
-      { label: "Joggers", link: "/kids/joggers" },
+      { label: "T-shirts", link: "/kids" },
+      { label: "Shirts", link: "/kids" },
+      { label: "Pants", link: "/kids" },
+      { label: "Trousers", link: "/kids" },
+      { label: "Joggers", link: "/kids" },
     ],
   },
   // Add other categories

@@ -4,7 +4,7 @@ import '../../style.css'
 const Footer = () => {
   return (
     <footer className="bg-blue-950 shadow-md font-sans tracking-wide relative px-2">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 md:grid-cols-4 lg:gap-24 gap-y-16 py-4 px-2 mx-auto lg:w-[90%] md:w-[90%] sm:w-[95%] w-[95%] max-w-7xl">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 md:grid-cols-4 lg:gap-24 gap-y-16 py-4 px-2 mx-auto lg:w-[90%] md:w-[90%] sm:w-[95%] w-[95%] max-w-7xl">
         <div>
           <h2 className="text-white text-lg font-semibold mb-4">Our Stores</h2>
           <ul className="space-y-4">

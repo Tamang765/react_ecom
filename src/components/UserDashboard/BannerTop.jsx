@@ -1,7 +1,7 @@
 
 const BannerTop = () => {
   return (
-    <div className="relative h-fit w-full overflow-hidden bg-gray-400">
+    <div className="relative h-fit  w-full overflow-hidden">
       <div className="max-w-7xl mx-auto h-full relative">
         <img
           src="/img/gift_card.avif"
