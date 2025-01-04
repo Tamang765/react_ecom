@@ -1,0 +1,74 @@
+/* Custom styles for Slick slider dots */
+.slick-dots {
+  position: absolute;
+  bottom: -40px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  gap: 8px;
+}
+
+.slick-dots li {
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  cursor: pointer;
+  transform: rotate(45deg);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slick-dots li button {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: #e2e8f0;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slick-dots li button:before {
+  display: none;
+}
+
+.slick-dots li.slick-active {
+  transform: rotate(45deg) scale(1.2);
+}
+
+.slick-dots li.slick-active button {
+  background: #1e3a8a;
+  opacity: 1;
+  box-shadow: 0 0 10px rgba(30, 58, 138, 0.3);
+}
+
+/* Hover effects */
+.slick-dots li:hover button {
+  opacity: 1;
+  background: #94a3b8;
+}
+
+/* Animation for active dot */
+@keyframes morphDot {
+  0% {
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  }
+  50% {
+    clip-path: polygon(100% 0%, 100% 100%, 0% 100%, 0% 0%);
+  }
+  100% {
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  }
+}
+
+.slick-dots li.slick-active button {
+  animation: morphDot 3s infinite;
+  background: linear-gradient(45deg, #1e3a8a, #60a5fa);
+}

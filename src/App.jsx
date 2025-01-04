@@ -1,18 +1,17 @@
-import MyRoutes from './MyRoutes'
+import { CartProvider } from "./context/CartContext";
+import MyRoutes from "./MyRoutes";
+import { Toaster } from "react-hot-toast";
 import 'flowbite/dist/flowbite.min.js';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-
-
-const App = () => {
+function App() {
   return (
-    <>
-    <MyRoutes/>
-    
-    
-    </>
-  )
+    <CartProvider>
+      <Toaster position="top-center" />
+      <MyRoutes />
+    </CartProvider>
+  );
 }
 
-export default App
+export default App;

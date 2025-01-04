@@ -76,13 +76,78 @@ const Header = () => {
       {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div className="fixed inset-0 bg-black/50 z-50" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <motion.div className="absolute right-0 top-0 h-full md:w-[50%] w-[80%] bg-white shadow-xl" initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ type: "spring", stiffness: 300, damping: 30 }}>
-              <button onClick={handleToggle} className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full transition-colors">
-                <X className="w-6 h-6 text-gray-700" />
-              </button>
-              <div className="p-6 pt-16">
-                <MobileNavigation setIsOpen={setIsOpen} />
+          <motion.div 
+            className="fixed inset-0 bg-black/50 z-50" 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }}
+          >
+            <motion.div 
+              className="absolute right-0 top-0 h-full md:w-[50%] w-[80%] bg-white shadow-xl flex flex-col"
+              initial={{ x: "100%" }} 
+              animate={{ x: 0 }} 
+              exit={{ x: "100%" }} 
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            >
+              {/* Header */}
+              <div className="p-4 border-b flex items-center justify-between bg-gradient-to-r from-blue-950 to-blue-800">
+                <Link to="/" className="flex items-center space-x-2" onClick={() => setIsOpen(false)}>
+                  <img src="/img/logo.jpg" alt="Eagle Trend" className="w-8 h-8 rounded-full" />
+                  <span className="font-bold text-lg text-white">Eagle Trend</span>
+                </Link>
+                <button 
+                  onClick={handleToggle} 
+                  className="p-2 hover:bg-white/10 rounded-full transition-colors"
+                >
+                  <X className="w-6 h-6 text-white" />
+                </button>
+              </div>
+
+              {/* Search Bar */}
+              <div className="p-4 border-b">
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Search products..."
+                    className="w-full px-4 py-2 rounded-full bg-gray-100 focus:bg-white border border-gray-200 focus:border-blue-500 outline-none transition-all"
+                  />
+                </div>
+              </div>
+
+              {/* Navigation */}
+              <div className="flex-1 overflow-y-auto">
+                <div className="p-4">
+                  <MobileNavigation setIsOpen={setIsOpen} />
+                </div>
+              </div>
+
+              {/* Footer Actions */}
+              <div className="border-t p-4 space-y-2 bg-gray-50">
+                <Link 
+                  to="/login" 
+                  className="flex items-center justify-between w-full p-2 rounded-lg hover:bg-gray-100"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <div className="flex items-center">
+                    <User className="w-5 h-5 text-gray-600 mr-3" />
+                    <span className="font-medium text-gray-700">Sign In</span>
+                  </div>
+                  <ArrowRight className="w-5 h-5 text-gray-400" />
+                </Link>
+                <Link 
+                  to="/cart" 
+                  className="flex items-center justify-between w-full p-2 rounded-lg hover:bg-gray-100"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <div className="flex items-center">
+                    <ShoppingCart className="w-5 h-5 text-gray-600 mr-3" />
+                    <span className="font-medium text-gray-700">Cart</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-sm text-gray-500 mr-2">0 items</span>
+                    <ArrowRight className="w-5 h-5 text-gray-400" />
+                  </div>
+                </Link>
               </div>
             </motion.div>
           </motion.div>
@@ -155,20 +220,23 @@ const NavDropdown = ({ label, items, link, products }) => {
 };
 
 const MobileNavigation = ({ setIsOpen }) => (
-  <nav className="flex flex-col gap-4">
+  <nav className="flex flex-col">
     <MobileNavLink to="/" label="Home" setIsOpen={setIsOpen} />
-    <MobileNavDropdown label="men" items={menItems} setIsOpen={setIsOpen} />
-    <MobileNavDropdown label="Women" items={womenItems} setIsOpen={setIsOpen} />
-    <MobileNavDropdown label="Kids" items={kidsItems} setIsOpen={setIsOpen} />
-    {/* <MobileNavLink to="/sale" label="Sale" setIsOpen={setIsOpen} /> */}
-    {/* <MobileNavLink to="/clearance" label="Clearance" setIsOpen={setIsOpen} /> */}
+    <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent my-2" />
+    <MobileNavDropdown label="Men's Collection" items={menItems} setIsOpen={setIsOpen} />
+    <MobileNavDropdown label="Women's Collection" items={womenItems} setIsOpen={setIsOpen} />
+    <MobileNavDropdown label="Kid's Collection" items={kidsItems} setIsOpen={setIsOpen} />
   </nav>
 );
 
 const MobileNavLink = ({ to, label, setIsOpen }) => (
-  <Link to={to} className="text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center justify-between" onClick={() => setIsOpen(false)}>
-    {label}
-    <ArrowRight className="w-5 h-5" />
+  <Link 
+    to={to} 
+    className="flex items-center px-2 py-3 text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-all" 
+    onClick={() => setIsOpen(false)}
+  >
+    <span className="text-base font-medium">{label}</span>
+    <ArrowRight className="w-5 h-5 ml-auto" />
   </Link>
 );
 
@@ -176,25 +244,38 @@ const MobileNavDropdown = ({ label, items, setIsOpen }) => {
   const [isOpen, setIsDropdownOpen] = useState(false);
 
   return (
-    <div>
-      <button className="w-full text-lg font-semibold text-gray-800 hover:text-blue-600 transition-colors flex items-center justify-between py-2" onClick={() => setIsDropdownOpen(!isOpen)}>
-        {label}
-        <ChevronRight className={`w-5 h-5 transition-transform duration-300 ${isOpen ? "rotate-90" : ""}`} />
+    <div className="border-b border-gray-100 last:border-0">
+      <button 
+        className="w-full flex items-center px-2 py-3 text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-all" 
+        onClick={() => setIsDropdownOpen(!isOpen)}
+      >
+        <span className="text-base font-medium">{label}</span>
+        <ChevronRight className={`w-5 h-5 ml-auto transition-transform duration-300 ${isOpen ? "rotate-90" : ""}`} />
       </button>
       <AnimatePresence>
         {isOpen && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden bg-gray-50 rounded-md mt-2">
-            <ul className="py-2 px-4 space-y-2">
+          <motion.div 
+            initial={{ height: 0, opacity: 0 }} 
+            animate={{ height: "auto", opacity: 1 }} 
+            exit={{ height: 0, opacity: 0 }} 
+            transition={{ duration: 0.2 }} 
+            className="overflow-hidden"
+          >
+            <div className="py-2 pl-4 pr-2 space-y-1">
               {items.flatMap((category) =>
                 category.items.map((item, idx) => (
-                  <li key={idx} className="list-disc pl-2">
-                    <Link to={item.link} className="text-base font-semibold text-gray-600 hover:text-blue-600 transition-colors block py-1" onClick={() => setIsOpen(false)}>
-                      {item.label}
-                    </Link>
-                  </li>
+                  <Link
+                    key={idx}
+                    to={item.link}
+                    className="flex items-center px-2 py-2 text-sm text-gray-600 hover:text-blue-600 rounded-lg hover:bg-blue-50/50 transition-all"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <span>{item.label}</span>
+                    <ArrowRight className="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100" />
+                  </Link>
                 ))
               )}
-            </ul>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
