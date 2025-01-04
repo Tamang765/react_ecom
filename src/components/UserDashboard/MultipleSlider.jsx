@@ -1,7 +1,7 @@
+import { AiOutlineEye } from "react-icons/ai";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
-import { AiOutlineEye } from "react-icons/ai";
 import "../../styles/slick-custom.css";
 
 const MultipleItems = ({ items }) => {
@@ -19,7 +19,6 @@ const MultipleItems = ({ items }) => {
       )}
     </div>
   );
-
   const settings = {
     dots: true,
     infinite: true,
@@ -80,8 +79,8 @@ export const ProductCard = ({ item }) => (
             className="h-full w-full object-cover object-top group-hover:scale-105 transition-all duration-500"
           />
         </Link>
-        <Link 
-          to="/productDetail" 
+        <Link
+          to="/productDetail"
           className="absolute top-2 right-2 bg-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-gray-100"
           title="Quick View"
         >
