@@ -38,10 +38,12 @@ import Editstock from "./pages/Adminpages/stock/Editstock";
 import Addstock from "./pages/Adminpages/stock/Addstock";
 import Orderlist from "./pages/Adminpages/order/Orderlist";
 import AllProducts from "./pages/Userpages/AllProducts";
+import ScrollToTop from "./components/ScrollToTop";
 
 const MyRoutes = () => {
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         {/* User page Route */}
         <Route path="" element={<Layout />}>

@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-const sizes = ['SM', 'MD', 'LG', 'XL'];
+const SizeSelector = ({ setSelectedSize }) => {
+  const [selectedSize, setSelectedSizeLocal] = useState('MD');
+  const sizes = ['SM', 'MD', 'LG', 'XL'];
 
-export default function SizeSelector() {
-  const [selectedSize, setSelectedSize] = useState('MD');
+  const handleSizeSelect = (size) => {
+    setSelectedSizeLocal(size);
+    setSelectedSize(size);
+  };
 
   return (
     <div>
@@ -16,7 +20,7 @@ export default function SizeSelector() {
             className={`w-10 h-10 border font-semibold text-sm rounded-md flex items-center justify-center shrink-0 ${
               selectedSize === size ? 'border-gray-800' : 'hover:border-gray-800'
             }`}
-            onClick={() => setSelectedSize(size)}
+            onClick={() => handleSizeSelect(size)}
           >
             {size}
           </button>
@@ -24,5 +28,6 @@ export default function SizeSelector() {
       </div>
     </div>
   );
-}
+};
 
+export default SizeSelector;

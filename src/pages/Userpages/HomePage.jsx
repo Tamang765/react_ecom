@@ -207,7 +207,7 @@ const HomePage = () => {
       {/* carousel section start */}
       <section className=" max-w-7xl mx-auto relative lg:w-[95%]  ">
         <div className="my-3">
-          <BannerTop />
+          {/* <BannerTop /> */}
         </div>
         <CarouselComp />
       </section>

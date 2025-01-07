@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useCart } from "../../context/CartContext";
 import MultipleItems from "../../components/UserDashboard/MultipleSlider";
 import { Heading, Products } from "./HomePage";
 import SizeSelector from "../../components/UserDashboard/SizeSelector";
 import ColorSelector from "../../components/UserDashboard/ColorSelector";
 import ReviewSection from "../../components/UserDashboard/ReviewSection";
+import ImageZoom from "../../components/UserDashboard/ImageZoom";
+import { toast } from "react-hot-toast";
 
 const products = [
   {
@@ -17,12 +20,37 @@ const products = [
 ];
 
 const ProductDetail = () => {
-  // const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCart();
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
   const [activeTab, setActiveTab] = useState('description')
-
 
   const images = ["https://readymadeui.com/images/product6.webp", "https://readymadeui.com/images/product8.webp", "https://readymadeui.com/images/product5.webp", "https://readymadeui.com/images/product7.webp"];
   const [selectedImage, setSelectedImage] = useState(images[0]);
+
+  const handleAddToCart = () => {
+    if (!selectedSize) {
+      toast.error("Please select a size");
+      return;
+    }
+    if (!selectedColor) {
+      toast.error("Please select a color");
+      return;
+    }
+
+    const product = {
+      id: Math.random().toString(36).substr(2, 9),
+      name: "Adjective Attire | T-shirt",
+      price: 1200,
+      image: selectedImage,
+      size: selectedSize,
+      color: selectedColor,
+      quantity: 1
+    };
+
+    addToCart(product);
+    toast.success("Added to cart successfully!");
+  };
 
   return (
     <>
@@ -30,7 +58,7 @@ const ProductDetail = () => {
         <div className="grid items-start grid-cols-1 lg:grid-cols-5 md:grid-cols-2 gap-8 max-lg:gap-16">
           <div className="lg:col-span-2 w-full lg:sticky top-0 text-center lg:block sm:flex sm:gap-2">
             <div className="lg:h-[400px] sm:h-[400px] h-[350px]">
-              <img src={selectedImage} alt="Selected Product" className="lg:w-10/12 w-full h-full rounded-md object-cover" />
+              <ImageZoom image={selectedImage} alt="Product Image" />
             </div>
             <div className="flex flex-wrap gap-4 justify-start mx-auto mt-4 sm:flex-col lg:flex-row">
               {images.map((img, index) => (
@@ -56,7 +84,7 @@ const ProductDetail = () => {
                   <button type="button" className="px-2.5 py-1.5 bg-gray-100 text-xs text-gray-800 rounded-md flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="12px" fill="currentColor" viewBox="0 0 512 512">
                       <path d="M453.332 85.332c0 38.293-31.039 69.336-69.332 69.336s-69.332-31.043-69.332-69.336C314.668 47.043 345.707 16 384 16s69.332 31.043 69.332 69.332zm0 0" data-original="#000000" />
-                      <path d="M384 170.668c-47.063 0-85.332-38.273-85.332-85.336C298.668 38.273 336.938 0 384 0s85.332 38.273 85.332 85.332c0 47.063-38.27 85.336-85.332 85.336zM384 32c-29.418 0-53.332 23.938-53.332 53.332 0 29.398 23.914 53.336 53.332 53.336s53.332-23.938 53.332-53.336C437.332 55.938 413.418 32 384 32zm69.332 394.668C453.332 464.957 422.293 496 384 496s-69.332-31.043-69.332-69.332c0-38.293 31.039-69.336 69.332-69.336s69.332 31.043 69.332 69.336zm0 0" data-original="#000000" />
+                      <path d="M384 170.668c-47.063 0-85.332-38.273-85.332-85.336C298.668 38.273 336.938 0 384 0s85.332 38.273 85.332 85.332c0 47.063-38.27 85.336-85.332 85.336zM384 32c-29.418 0-53.332 23.938-53.332 53.332 0 29.398 23.914 53.336 53.332 53.336s53.332-23.938 53.332-53.336C437.332 55.938 413.418 32 384 32zm69.332 394.668C453.332 464.957 422.293 496 384 496s-69.332-31.043-69.332-69.332c0-38.293 31.039-69.336 69.332-69.336s69.332 31.043 69.332 69.332zm0 0" data-original="#000000" />
                       <path d="M384 512c-47.063 0-85.332-38.273-85.332-85.332 0-47.063 38.27-85.336 85.332-85.336s85.332 38.273 85.332 85.336c0 47.059-38.27 85.332-85.332 85.332zm0-138.668c-29.418 0-53.332 23.938-53.332 53.336C330.668 456.063 354.582 480 384 480s53.332-23.938 53.332-53.332c0-29.398-23.914-53.336-53.332-53.336zM154.668 256c0 38.293-31.043 69.332-69.336 69.332C47.043 325.332 16 294.293 16 256s31.043-69.332 69.332-69.332c38.293 0 69.336 31.039 69.336 69.332zm0 0" data-original="#000000" />
                       <path d="M85.332 341.332C38.273 341.332 0 303.062 0 256s38.273-85.332 85.332-85.332c47.063 0 85.336 38.27 85.336 85.332s-38.273 85.332-85.336 85.332zm0-138.664C55.914 202.668 32 226.602 32 256s23.914 53.332 53.332 53.332c29.422 0 53.336-23.934 53.336-53.332s-23.914-53.332-53.336-53.332zm0 0" data-original="#000000" />
                       <path d="M135.703 245.762c-7.426 0-14.637-3.864-18.562-10.774-5.825-10.218-2.239-23.254 7.98-29.101l197.95-112.852c10.218-5.867 23.253-2.281 29.1 7.977 5.825 10.218 2.24 23.254-7.98 29.101L146.238 242.965a21.195 21.195 0 0 1-10.535 2.797zm197.93 176c-3.586 0-7.211-.899-10.54-2.797L125.142 306.113c-10.22-5.824-13.801-18.86-7.977-29.101 5.8-10.239 18.856-13.844 29.098-7.977l197.953 112.852c10.219 5.824 13.8 18.86 7.976 29.101-3.945 6.91-11.156 10.774-18.558 10.774zm0 0" data-original="#000000" />
@@ -93,11 +121,11 @@ const ProductDetail = () => {
 
             <hr className="my-8" />
 
-            <SizeSelector />
+            <SizeSelector setSelectedSize={setSelectedSize} />
 
             <hr className="my-8" />
 
-            <ColorSelector />
+            <ColorSelector setSelectedColor={setSelectedColor} />
 
             <hr className="my-8" />
 
@@ -105,7 +133,11 @@ const ProductDetail = () => {
               <button type="button" className="min-w-[200px] px-4 py-3 bg-gray-800 hover:bg-gray-900 text-white text-sm font-semibold rounded-md">
                 Buy now
               </button>
-              <button type="button" className="min-w-[200px] px-4 py-2.5 border border-gray-800 bg-transparent hover:bg-gray-50 text-gray-800 text-sm font-semibold rounded-md">
+              <button 
+                type="button" 
+                onClick={handleAddToCart}
+                className="min-w-[200px] px-4 py-2.5 border border-gray-800 bg-transparent hover:bg-gray-50 text-gray-800 text-sm font-semibold rounded-md"
+              >
                 Add to cart
               </button>
             </div>
