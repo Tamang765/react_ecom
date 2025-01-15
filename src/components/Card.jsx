@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import SignUp, { Login } from "./signup";
 const Card = (props) => {
   const dispatch = useDispatch();
 
@@ -32,14 +33,30 @@ const Card = (props) => {
           Add to Cart
         </button>
 
-        {test && (
-          <div className="fixed inset-0  p-4 bg-white rounded-md shadow-md opacity-70">
-            <p>Item added to cart</p>
-          </div>
-        )}
+        {test && <ModalComponent setTest={setTest} />}
       </div>
     </div>
   );
 };
 
 export default Card;
+
+function ModalComponent({ setTest }) {
+  const [showLogin, setShowLogin] = useState(true);
+  return (
+    <div className="inset-0 bg-white/10 fixed backdrop-blur">
+      <div className="fixed z-50 w-fit mx-auto  left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2   p-4 bg-black text-white rounded-md shadow-md opacity-80 ">
+        <div className="flex justify-center gap-4 items-center  font-semibold text-xl">
+          <button className=" p-4" onClick={() => setShowLogin(true)}>
+            Login{" "}
+          </button>
+          |
+          <button className=" p-4" onClick={() => setShowLogin(false)}>
+            Register
+          </button>
+        </div>{" "}
+        {!showLogin ? <SignUp close={setTest} /> : <Login close={setTest} />}
+      </div>
+    </div>
+  );
+}
