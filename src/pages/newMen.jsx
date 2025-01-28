@@ -1,40 +1,45 @@
 import { Grid, Grid3x3, LayoutGrid } from "lucide-react"
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useSearchParams } from "react-router-dom"
 import Card from "../components/Card"
 import { FilterByColor, FilterByPrice, FilterBySize } from "../components/filterbycolor/FilterByColor"
 import { getProduct } from "../redux/slice/productSlice"
 
 const colorData = [
-  { id: 1, color: "Red" },
-  { id: 2, color: "Blue" },
-  { id: 3, color: "Black" },
-  { id: 4, color: "Brown" },
-  { id: 5, color: "Green" },
+  { id: 1, color: "red" },
+  { id: 2, color: "blue" },
+  { id: 3, color: "black" },
+  { id: 4, color: "brown" },
+  { id: 5, color: "green" },
 ]
 
-const Search = () => {
+const NewMen = () => {
   const [limit, setLimit] = useState(20)
-  const dispatch = useDispatch()
-  const [searchParams] = useSearchParams()
-  const searchData = useSelector((state) => state.product.product)
-
-  const [gridCount, setGridCount] = useState(2)
-  const searchQuery = searchParams?.get("s")
-
+  const category = useSelector((state) => state.category.category)
+  const men = useSelector((state) => state.product.men)
   const [selectedColor, setSelectedColor] = useState([])
   const [size, setSize] = useState("")
   const [priceRange, setPriceRange] = useState({
     minPrice: 0,
     maxPrice: 0,
   })
+  const dispatch = useDispatch()
+  const [gridCount, setGridCount] = useState(2)
+
+  const menCategory = category?.length ? category?.find((item) => item?.name.toLowerCase() === "men")?._id : ""
 
   useEffect(() => {
-    if (searchQuery) {
-      dispatch(getProduct({ name: searchQuery }))
-    }
-  }, [dispatch, searchQuery])
+    menCategory &&
+      dispatch(
+        getProduct({
+          category_id: menCategory,
+          category_name: "men",
+          color: selectedColor,
+          size,
+          priceRange,
+        }),
+      )
+  }, [dispatch, menCategory, selectedColor, size, priceRange])
 
   return (
     <div className="min-h-screen p-6 bg-gray-100">
@@ -43,10 +48,22 @@ const Search = () => {
           <div className="p-6 bg-white rounded-lg shadow-md">
             <h2 className="mb-4 text-xl font-semibold">Filters</h2>
             <FilterByColor colors={colorData} setSelectedColor={setSelectedColor} />
+            <button
+              className="w-full px-4 py-2 mt-4 text-white transition duration-300 bg-red-500 rounded hover:bg-red-600"
+              onClick={() => setSelectedColor([])}
+            >
+              Reset Color
+            </button>
           </div>
 
           <div className="p-6 bg-white rounded-lg shadow-md">
             <FilterBySize setSize={setSize} size={size} />
+            <button
+              className="w-full px-4 py-2 mt-4 text-white transition duration-300 bg-red-500 rounded hover:bg-red-600"
+              onClick={() => setSize("")}
+            >
+              Reset Size
+            </button>
           </div>
 
           <div className="p-6 bg-white rounded-lg shadow-md">
@@ -56,8 +73,6 @@ const Search = () => {
 
         <div className="space-y-6 lg:col-span-3">
           <div className="p-6 bg-white rounded-lg shadow-md">
-            <h3 className="mb-4 text-2xl font-bold">Search For {searchQuery || ""}</h3>
-
             <div className="flex items-center justify-between mb-4">
               <div className="flex space-x-2">
                 {selectedColor?.map((color) => (
@@ -94,26 +109,24 @@ const Search = () => {
                 gridTemplateColumns: `repeat(${gridCount}, minmax(0, 1fr))`,
               }}
             >
-              {searchData?.slice(0, limit)?.map((product, index) => (
-                <div key={index} className="flex flex-col">
-                  <Card {...product} />
-                </div>
+              {men?.slice(0, limit)?.map((product, index) => (
+                <Card key={index} {...product} />
               ))}
             </div>
           </div>
 
-          {/* <div className="flex justify-center">
-            <button
+          <div className="flex justify-center">
+            {/* <button
               className="px-6 py-3 text-white transition duration-300 bg-blue-500 rounded-lg shadow-md hover:bg-blue-600"
               onClick={() => setLimit(limit + 20)}
             >
               Load More
-            </button>
-          </div> */}
+            </button> */}
+          </div>
         </div>
       </div>
     </div>
   )
 }
 
-export default Search
+export default NewMen

@@ -1,5 +1,9 @@
+import axios from "axios";
 import { X } from "lucide-react";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { loginUser } from "../redux/slice/authSlice";
 
 const SignUp = ({ close }) => {
   const [userData, setUserData] = useState({
@@ -7,25 +11,34 @@ const SignUp = ({ close }) => {
     email: "",
     password: "",
     cpassword: "",
+    phone: "",
+    address: "",
+
   });
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     console.log(userData);
+  const response =  await axios.post("http://localhost:9000/v1/api/user/register", userData);
+  console.log(response)
+  if(response.data.user){
+    toast.success("Registered successfully");
+    close(false);
+  }
   }
 
   return (
     <form
-      className="flex flex-col gap-4 w-96  p-4 shadow-2xl rounded-md border-2"
+      className="flex flex-col gap-4 p-4 border-2 rounded-md shadow-2xl w-96"
       onSubmit={handleSubmit}
     >
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-center w-full">Sign Up</h1>
+        <h1 className="w-full text-3xl font-bold text-center">Sign Up</h1>
         <X onClick={() => close(false)} />
       </div>
       <label htmlFor="name">Name</label>
       <input
-        className="border-2 pl-2 text-black"
+        className="pl-2 text-black border-2"
         type="text"
         name="name"
         id="name"
@@ -34,16 +47,34 @@ const SignUp = ({ close }) => {
       />
       <label htmlFor="email">Email</label>{" "}
       <input
-        className="border-2 pl-2 text-black"
+        className="pl-2 text-black border-2"
         type="email"
         name="email"
         id="email"
         value={userData.email}
         onChange={(e) => setUserData({ ...userData, email: e.target.value })}
       />
+                  <label htmlFor="name">Phone</label>
+      <input
+        className="pl-2 text-black border-2"
+        type="number"
+        name="phone"
+        id="phone"
+        value={userData.phone}
+        onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
+      />
+      <label htmlFor="name">Address</label>
+      <input
+        className="pl-2 text-black border-2"
+        type="text"
+        name="address"
+        id="address"
+        value={userData.name}
+        onChange={(e) => setUserData({ ...userData, address: e.target.value })}
+      />
       <label htmlFor="password">Password</label>
       <input
-        className="border-2 pl-2 text-black"
+        className="pl-2 text-black border-2"
         type="password"
         name="password"
         id="password"
@@ -52,7 +83,7 @@ const SignUp = ({ close }) => {
       />
       <label htmlFor="cpassword">Confirm Password</label>
       <input
-        className="border-2 pl-2 text-black"
+        className="pl-2 text-black border-2"
         type="password"
         name="cpassword"
         id="cpassword"
@@ -61,6 +92,7 @@ const SignUp = ({ close }) => {
           setUserData({ ...userData, cpassword: e.target.value })
         }
       />
+
       <button type="submit">Submit</button>
     </form>
   );
@@ -69,6 +101,7 @@ const SignUp = ({ close }) => {
 export default SignUp;
 
 export function Login({ close }) {
+  const dispatch = useDispatch();
   const [userData, setUserData] = useState({
     email: "",
     password: "",
@@ -77,20 +110,21 @@ export function Login({ close }) {
   function handleSubmit(e) {
     e.preventDefault();
     console.log(userData);
+    dispatch(loginUser(userData));
   }
   return (
     <div>
       <form
-        className="flex flex-col gap-4 w-96  p-4 shadow-2xl rounded-md border-2"
+        className="flex flex-col gap-4 p-4 border-2 rounded-md shadow-2xl w-96"
         onSubmit={handleSubmit}
       >
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-center w-full">Log In</h1>
+          <h1 className="w-full text-3xl font-bold text-center">Log In</h1>
           <X onClick={() => close(false)} />
         </div>
         <label htmlFor="email">Email</label>{" "}
         <input
-          className="border-2 pl-2 text-black"
+          className="pl-2 text-black border-2"
           type="email"
           name="email"
           id="email"
@@ -99,7 +133,7 @@ export function Login({ close }) {
         />
         <label htmlFor="password">Password</label>
         <input
-          className="border-2 pl-2 text-black"
+          className="pl-2 text-black border-2"
           type="password"
           name="password"
           id="password"

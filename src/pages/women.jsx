@@ -1,80 +1,132 @@
-import React, { useEffect, useState } from "react";
-
-import Card from "../components/Card";
-import {
-  FilterByColor,
-  FilterByPrice,
-  FilterBySize,
-} from "../components/filterbycolor/FilterByColor";
-
-import { Grid3x3, LayoutGrid } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
-import { filterWomen } from "../redux/slice/filterSlice";
+import { Grid, Grid3x3, LayoutGrid } from "lucide-react"
+import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import Card from "../components/Card"
+import { FilterByColor, FilterByPrice, FilterBySize } from "../components/filterbycolor/FilterByColor"
+import { getProduct } from "../redux/slice/productSlice"
 
 const colorData = [
-  {
-    id: 1,
-    color: "Red",
-  },
-  { id: 2, color: "Blue" },
-  { id: 3, color: "Black" },
-  { id: 4, color: "Brown" },
-  { id: 5, color: "Green" },
-];
+  { id: 1, color: "red" },
+  { id: 2, color: "blue" },
+  { id: 3, color: "black" },
+  { id: 4, color: "brown" },
+  { id: 5, color: "green" },
+]
 
 const Women = () => {
-  const [limit, setLimit] = useState(20);
-  const dispatch = useDispatch();
-  const women = useSelector((state) => state.filter.women);
+  const [limit, setLimit] = useState(20)
+  const category = useSelector((state) => state.category.category)
+  const women = useSelector((state) => state.product.women)
+  const [selectedColor, setSelectedColor] = useState([])
+  const [size, setSize] = useState("")
+  const [priceRange, setPriceRange] = useState({
+    minPrice: 0,
+    maxPrice: 0,
+  })
+  const dispatch = useDispatch()
+  const [gridCount, setGridCount] = useState(2)
+
+  const womenCategory = category?.length ? category?.find((item) => item?.name.toLowerCase() === "women")?._id : ""
 
   useEffect(() => {
-    dispatch(filterWomen());
-  }, [dispatch]);
-  const [gridCount, setGridCount] = useState(2);
+    womenCategory &&
+      dispatch(
+        getProduct({
+          category_id: womenCategory,
+          category_name: "women",
+          color: selectedColor,
+          size,
+          priceRange,
+        }),
+      )
+  }, [dispatch, womenCategory, selectedColor, size, priceRange])
 
   return (
-    <div className="min-h-screen">
-      <div className="w-full  grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-2">
-        <div className="col-span-1   px-2 flex flex-col  gap-4 ">
-          <FilterByColor colors={colorData} />
-          <FilterBySize />
-          <FilterByPrice />
-        </div>
-        <div className="col-span-3">
-          {/* <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4"> */}
-          <div className="flex gap-4">
-            <LayoutGrid onClick={() => setGridCount(2)} />
-            <Grid3x3 onClick={() => setGridCount(3)} />
-            <img
-              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAY1BMVEX///8cHBwdHR0dHRsHBwcAAADV1dXY2NgXFxUXFxcUFBLp6em8vLxTU1IEBACWlpZERENNTUsODg4+Pj4jIyHx8fH39/fAwMCLi4tGRkYNDQg1NTOYmJiurq5ycnIuLi5dXV3FnTvsAAADo0lEQVR4nO3d3VbaQBSGYTMJmkSQkIAQwo/3f5VNYg86/Qoz21UQ8H1Py0YfqeLBXtunJyIiIiK6r96fH6X3E8LnyaP0clKYPEbZGaFzzvBMbszysa8ycF6YlFl89fB8hWEg+/wEDBXDQG0YKEPCcrOexrbed4mrD/ED03VTuKKyDBxql3R7w+e0Kc8Lk2x94h//1WtVuMnOMPC0KFw5swzMM1e0K8PANAsJp4ZnG4Vzw8DXhNWrYeAuhe1dCcvUKHxL8/t6DRH+HUIJIUI/hBpCCaGEEKEfQg2hhFBCiNAPoYZQQighROiHUEMoIZQQIvRDqCGUEEoIEfoh1BBKFxBeeCfq24Wu3r/G99wULtsYBlZtnuaLlWFis03z5tkwsN+GdhO7qonP9QNHw0C1TNN0WRk6DgONYaBLA0KXFIbGZUrLQDqUG/rCQEh42dIrFBLWhnXqcSG2sCxgj6+I4fFv5TCxNUyUIWFx2M1j222O/cBH/MB81/XAzjLw0ROPG8PA4bs3aC//bvH28O/4CBF63aSQ37wReiHUEEoIJYQI/RBqCCWEEkKEfgg1hBJCCSFCP4QaQgmhhBChH0INoYRQQojQD6GGUEIoIfwJQsvW16q1bn3NrMJdLzTdTVyHdoSTZhFfOyzEdoaBWT+QLA0Di27YoLUMNMHty2HPtYzsc7819tFDw+MT60CaGwbyqA3aa+y5Xq7ga2j6eqW2L3CZDBOWAfOHCL6GSTWLb7EcFmINA7NlT1xaBrp8+D40DFQBofFnaZWnF96gtf8s/c+7ib3w1t4PESL0+gnCe/y9FOGfIdQQSgglhAj9EGoIJYQSQoR+CDWEEkIJIUI/hBpCCaGEEKEfQg2hhFBCiNAPoYZQQigh/AlC693E7NbuJoY2aItD/J3J+eftS8OA+fblfGa8fTk/FMH7pVl89Xi/1DCQjbuUb4Y+75eaBrhBa7kKfIt3hMMbtF0bfXa5bZbDLejWMDHego5//O9b0IbHt6Fb0Em9N1zbvtI978pwz3sVuuf9AFd2ecdH6IVQQyghlBAi9EOoIZQQSggR+iHUEEoIJYQI/RBqCCWEEkKEfgg1hBJCCSFCP4QaQgmhhBChH0INoXQDG7RX2Iky3U0MbtCWm2l8+y5x9cEwsG7y/iVZGyYOZZp3e8PAJvDX450rL75Bm1o2aMf1y63hI5TJ927QXqXz34cP0Rmh5T/c7TaZnBK+vzxK7yeERERERHSr/QIvglm9N8GDSgAAAABJRU5ErkJggg=="
-              alt=""
-              width={30}
-              className="h-6"
-              height={15}
-              onClick={() => setGridCount(4)}
-            />
+    <div className="min-h-screen p-6 bg-gray-100">
+      <div className="grid gap-6 lg:grid-cols-4">
+        <div className="space-y-6 lg:col-span-1">
+          <div className="p-6 bg-white rounded-lg shadow-md">
+            <h2 className="mb-4 text-xl font-semibold">Filters</h2>
+            <FilterByColor colors={colorData} setSelectedColor={setSelectedColor} />
+            <button
+              className="w-full px-4 py-2 mt-4 text-white transition duration-300 bg-red-500 rounded hover:bg-red-600"
+              onClick={() => setSelectedColor([])}
+            >
+              Reset Color
+            </button>
           </div>
-          <div
-            className={`grid  gap-4`}
-            style={{
-              gridTemplateColumns: `repeat(${gridCount}, minmax(0, 1fr))`,
-            }}
-          >
-            {/* {products.map((product, index) => {
-            return <Card key={index} {...product} />;
-          })} */}
-            {women?.slice(0, limit)?.map((product, index) => (
-              <Card key={index} {...product} />
-            ))}
+
+          <div className="p-6 bg-white rounded-lg shadow-md">
+            <FilterBySize setSize={setSize} size={size} />
+            <button
+              className="w-full px-4 py-2 mt-4 text-white transition duration-300 bg-red-500 rounded hover:bg-red-600"
+              onClick={() => setSize("")}
+            >
+              Reset Size
+            </button>
+          </div>
+
+          <div className="p-6 bg-white rounded-lg shadow-md">
+            <FilterByPrice setPriceRange={setPriceRange} />
           </div>
         </div>
-        <br />
-        <button className="border-4" onClick={() => setLimit(limit + 20)}>
-          Load More
-        </button>
+
+        <div className="space-y-6 lg:col-span-3">
+          <div className="p-6 bg-white rounded-lg shadow-md">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex space-x-2">
+                {selectedColor?.map((color) => (
+                  <span key={color} className="px-3 py-1 text-sm text-gray-800 bg-gray-200 rounded-full">
+                    {color}
+                  </span>
+                ))}
+              </div>
+              <div className="flex items-center space-x-4">
+                <button
+                  onClick={() => setGridCount(2)}
+                  className={`p-2 rounded ${gridCount === 2 ? "bg-gray-200" : "hover:bg-gray-100"}`}
+                >
+                  <LayoutGrid size={20} />
+                </button>
+                <button
+                  onClick={() => setGridCount(3)}
+                  className={`p-2 rounded ${gridCount === 3 ? "bg-gray-200" : "hover:bg-gray-100"}`}
+                >
+                  <Grid3x3 size={20} />
+                </button>
+                <button
+                  onClick={() => setGridCount(4)}
+                  className={`p-2 rounded ${gridCount === 4 ? "bg-gray-200" : "hover:bg-gray-100"}`}
+                >
+                  <Grid size={20} />
+                </button>
+              </div>
+            </div>
+
+            <div
+              className={`grid gap-6`}
+              style={{
+                gridTemplateColumns: `repeat(${gridCount}, minmax(0, 1fr))`,
+              }}
+            >
+              {women?.slice(0, limit)?.map((product, index) => (
+                <Card key={index} {...product} />
+              ))}
+            </div>
+          </div>
+
+          {/* <div className="flex justify-center">
+            <button
+              className="px-6 py-3 text-white transition duration-300 bg-blue-500 rounded-lg shadow-md hover:bg-blue-600"
+              onClick={() => setLimit(limit + 20)}
+            >
+              Load More
+            </button>
+          </div> */}
+        </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Women;
+export default Women

@@ -5,24 +5,24 @@ import { axiosInstance as axios } from "../../utils/axios";
 const initialState = {
   isLoading: false,
   isError: false,
-  category: [],
-  singleCategory: null,
+  order: [],
+  singleOrder: null,
 };
 
-export const getCategory = createAsyncThunk("category/get", async (data) => {
+export const getOrder = createAsyncThunk("order/get", async () => {
   try {
-    const response = await axios.get(`category`, data);
+    const response = await axios.get(`order`);
     return response.data.data;
   } catch (error) {
     toast.error(error.message || "Something went wrong");
   }
 });
 
-export const getSingleCategory = createAsyncThunk(
-  "category/getSingle",
+export const getSingleOrder = createAsyncThunk(
+  "order/getSingle",
   async (id) => {
     try {
-      const response = await axios.get(`category/${id}`);
+      const response = await axios.get(`order/${id}`);
       return response.data.data;
     } catch (error) {
       toast.error(error.message || "Something went wrong");
@@ -30,20 +30,20 @@ export const getSingleCategory = createAsyncThunk(
   }
 );
 
-export const postCategory = createAsyncThunk("category/post", async (data) => {
+export const postOrder = createAsyncThunk("order/post", async (data) => {
   try {
-    const response = await axios.post(`category`, data);
+    const response = await axios.post(`order`, data);
     return response.data.data;
   } catch (error) {
     toast.error(error.message || "Something went wrong");
   }
 });
 
-export const deleteCategory = createAsyncThunk(
-  "category/delete",
+export const deleteOrder = createAsyncThunk(
+  "order/delete",
   async (id) => {
     try {
-      await axios.delete(`category/${id}`);
+      await axios.delete(`order/${id}`);
       return id;
     } catch (error) {
       toast.error(error.message || "Something went wrong");
@@ -51,11 +51,11 @@ export const deleteCategory = createAsyncThunk(
   }
 );
 
-export const updateCategory = createAsyncThunk(
-  "category/patch",
+export const updateOrder = createAsyncThunk(
+  "order/patch",
   async ({ id, formData }) => {
     try {
-      await axios.patch(`category/${id}`, formData);
+      await axios.patch(`order/${id}`, formData);
       return id;
     } catch (error) {
       toast.error(error.message || "Something went wrong");
@@ -63,73 +63,73 @@ export const updateCategory = createAsyncThunk(
   }
 );
 
-const categorySlice = createSlice({
-  name: "category",
+const orderSlice = createSlice({
+  name: "order",
   initialState,
   reducers: {
-    resetCategory: (state) => {
-      state.category = [];
+    resetOrder: (state) => {
+      state.order = [];
       state.isError = false;
       state.isLoading = false;
-      state.singleCategory = null;
+      state.singleOrder = null;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(postCategory.pending, (state) => {
+    builder.addCase(postOrder.pending, (state) => {
       state.isLoading = true;
       state.isError = false;
     });
-    builder.addCase(postCategory.fulfilled, (state, action) => {
+    builder.addCase(postOrder.fulfilled, (state, action) => {
       state.isLoading = false;
-      // state.category = action.payload;
+      // state.order = action.payload;
     });
-    builder.addCase(postCategory.rejected, (state) => {
+    builder.addCase(postOrder.rejected, (state) => {
       state.isLoading = false;
       state.isError = true;
     });
-    builder.addCase(getCategory.pending, (state) => {
+    builder.addCase(getOrder.pending, (state) => {
       state.isLoading = true;
       state.isError = false;
     });
-    builder.addCase(getCategory.fulfilled, (state, action) => {
+    builder.addCase(getOrder.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.category = action.payload;
+      state.order = action.payload;
     });
-    builder.addCase(getCategory.rejected, (state) => {
+    builder.addCase(getOrder.rejected, (state) => {
       state.isLoading = false;
       state.isError = true;
     });
-    builder.addCase(deleteCategory.pending, (state) => {
+    builder.addCase(deleteOrder.pending, (state) => {
       state.isLoading = true;
       state.isError = false;
     });
-    builder.addCase(deleteCategory.fulfilled, (state, action) => {
+    builder.addCase(deleteOrder.fulfilled, (state, action) => {
       state.isLoading = false;
 
-      state.category = state.category.filter(
+      state.order = state.order.filter(
         (cat) => cat?._id !== action.payload
       );
     });
-    builder.addCase(deleteCategory.rejected, (state) => {
+    builder.addCase(deleteOrder.rejected, (state) => {
       state.isLoading = false;
       state.isError = true;
     });
 
-    builder.addCase(getSingleCategory.pending, (state) => {
+    builder.addCase(getSingleOrder.pending, (state) => {
       state.isLoading = true;
       state.isError = false;
     });
-    builder.addCase(getSingleCategory.fulfilled, (state, action) => {
+    builder.addCase(getSingleOrder.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.singleCategory = action.payload;
+      state.singleOrder = action.payload;
     });
-    builder.addCase(getSingleCategory.rejected, (state) => {
+    builder.addCase(getSingleOrder.rejected, (state) => {
       state.isLoading = false;
       state.isError = true;
     });
   },
 });
 
-export const { resetCategory } = categorySlice.actions;
+export const { resetOrder } = orderSlice.actions;
 
-export default categorySlice.reducer;
+export default orderSlice.reducer;

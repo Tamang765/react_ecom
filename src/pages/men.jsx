@@ -10,6 +10,7 @@ import {
 import { Grid3x3, LayoutGrid } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { filterMen } from "../redux/slice/filterSlice";
+import { getProduct } from "../redux/slice/productSlice";
 
 const colorData = [
   {
@@ -75,17 +76,32 @@ const Men = () => {
     setFilteredData(filtered);
   }, [men, selectedColor, size, priceRange]);
 
+  const category = useSelector((state) => state.category.category);
+
+
+    const products = useSelector((state) => state.product.men);
+
+
+    console.log(category)
+    const menCategory =category?.length ? category?.find((item)=>item?.name.toLowerCase() ==="men")?._id:""
+
+    useEffect(()=>{
+      menCategory &&  dispatch(getProduct({category_id:menCategory,category_name: "men"}))
+    },[dispatch, menCategory])
+
+
+    console.log(selectedColor)
   return (
     <div className="min-h-screen">
-      <div className="w-full  grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-2">
-        <div className="col-span-1   px-2 flex flex-col  gap-4 ">
+      <div className="grid w-full grid-cols-1 gap-2 lg:grid-cols-4 md:grid-cols-2">
+        <div className="flex flex-col col-span-1 gap-4 px-2 ">
           <FilterByColor
             colors={colorData}
             setSelectedColor={setSelectedColor}
           />
 
           <button
-            className=" bg-red-300 text-white p-2 cursor-pointer"
+            className="p-2 text-white bg-red-300 cursor-pointer "
             onClick={() => setSelectedColor([])}
           >
             Reset Color
@@ -93,7 +109,7 @@ const Men = () => {
 
           <FilterBySize setSize={setSize} size={size} />
           <button
-            className=" bg-red-300 text-white p-2 cursor-pointer"
+            className="p-2 text-white bg-red-300 cursor-pointer "
             onClick={() => setSize("")}
           >
             Reset Size
@@ -106,7 +122,7 @@ const Men = () => {
               <div>{color}/</div>
             ))}
           </div>
-          {/* <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4"> */}
+          {/* <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 md:grid-cols-2"> */}
           <div className="flex gap-4">
             <LayoutGrid onClick={() => setGridCount(2)} />
             <Grid3x3 onClick={() => setGridCount(3)} />
@@ -147,9 +163,9 @@ const Men = () => {
           </div>
         </div>
         <br />
-        <button className="border-4" onClick={() => setLimit(limit + 20)}>
+        {/* <button className="border-4" onClick={() => setLimit(limit + 20)}>
           Load More
-        </button>
+        </button> */}
       </div>
     </div>
   );
